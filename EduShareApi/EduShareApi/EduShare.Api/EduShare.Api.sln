@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduShare.Api", "EduShare.Api\EduShare.Api.csproj", "{BDB50ABE-E5C6-49D2-947D-075C48DB7F5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduShare.Service", "EduShare.Service\EduShare.Service.csproj", "{4F0E2459-5C44-4797-A20E-36A00CCF2574}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduShare.Data", "EduShare\EduShare.Data.csproj", "{5803413D-6221-4FE9-90D3-359F21B3221A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduShare.Core", "EduShare.Core\EduShare.Core.csproj", "{CAB09364-E160-40B3-88B0-DFAEA1CC0A24}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDB50ABE-E5C6-49D2-947D-075C48DB7F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB50ABE-E5C6-49D2-947D-075C48DB7F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB50ABE-E5C6-49D2-947D-075C48DB7F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB50ABE-E5C6-49D2-947D-075C48DB7F5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0E2459-5C44-4797-A20E-36A00CCF2574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0E2459-5C44-4797-A20E-36A00CCF2574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0E2459-5C44-4797-A20E-36A00CCF2574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0E2459-5C44-4797-A20E-36A00CCF2574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5803413D-6221-4FE9-90D3-359F21B3221A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5803413D-6221-4FE9-90D3-359F21B3221A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5803413D-6221-4FE9-90D3-359F21B3221A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5803413D-6221-4FE9-90D3-359F21B3221A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB09364-E160-40B3-88B0-DFAEA1CC0A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB09364-E160-40B3-88B0-DFAEA1CC0A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB09364-E160-40B3-88B0-DFAEA1CC0A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB09364-E160-40B3-88B0-DFAEA1CC0A24}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
