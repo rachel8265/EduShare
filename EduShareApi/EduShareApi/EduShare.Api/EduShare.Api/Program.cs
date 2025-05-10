@@ -138,8 +138,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
-        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+        ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
         //ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
         //ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")))
@@ -150,8 +150,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("EditorOrAdmin", policy => policy.RequireRole("Editor", "Admin"));
+    //options.AddPolicy("EditorOrAdmin", policy => policy.RequireRole("Editor", "Admin"));
     options.AddPolicy("ViewerOnly", policy => policy.RequireRole("Viewer"));
+    options.AddPolicy("TeacherOnly", policy => policy.RequireRole("Teacher"));
 });
 
 // הוסף את שירותי CORS
@@ -170,10 +171,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddDefaultAWSOptions(new AWSOptions
 {
     Credentials = new BasicAWSCredentials(
-        builder.Configuration["AWS:AccessKey"],
-        builder.Configuration["AWS:SecretKey"]
+      //builder.Configuration["AWS:AccessKey"],
+      //builder.Configuration["AWS:SecretKey"]
+      Environment.GetEnvironmentVariable("AWS_ACCESS_KEY"),
+        Environment.GetEnvironmentVariable("AWS_SECRET_KEY")
     ),
-    Region = RegionEndpoint.GetBySystemName(builder.Configuration["AWS:Region"])
+    //Region = RegionEndpoint.GetBySystemName(builder.Configuration["AWS:Region"])
+    Region = RegionEndpoint.GetBySystemName(Environment.GetEnvironmentVariable("AWS_REGION"))
 });
 
 // רישום שירות S3

@@ -3,6 +3,7 @@ using EduShare.Api.PostModels;
 using EduShare.Core.DTOs;
 using EduShare.Core.IRepositories;
 using EduShare.Core.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,6 +99,7 @@ namespace EduShare.Api.Controllers
         }
 
         [HttpGet("users/{userId}/root-folders")]
+        [Authorize]
         public async Task<ActionResult<FoldersAndFilesDto>> GetRootFoldersByUserId(int userId)
         {
             var foldersAndFiles = await _folderService.GetRootFoldersByUserIdAsync(userId);

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-
+using DotNetEnv;
 using EduShare.Core.DTOs;
 using EduShare.Core.Entities;
 using EduShare.Core.IRepositories;
@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +20,14 @@ namespace EduShare.Service.Services
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
 
         public UserService(IRepositoryManager repositoryManager, IMapper mapper,IConfiguration configuration)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
-            _configuration = configuration;
+            //_configuration = configuration;
+            Env.Load();
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -110,17 +112,17 @@ namespace EduShare.Service.Services
             }
 
 
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var tokeOptions = new JwtSecurityToken(
-                issuer: _configuration ["JWT:Issuer"],
-                audience: _configuration["JWT:Audience"],
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Env.GetString("JWT_KEY")));
+            var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                    issuer: Env.GetString("JWT_ISSUER"),
+            audience: Env.GetString("JWT_AUDIENCE"),
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: signinCredentials
+                signingCredentials: credentials
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public async Task<UserDto?> RegisterUserAsync(UserDto userObj)
