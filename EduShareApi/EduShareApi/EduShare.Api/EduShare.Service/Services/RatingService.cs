@@ -44,17 +44,33 @@ namespace EduShare.Service.Services
             return null;
         }
 
-        public async Task<bool> UpdateRatingAsync(int id, RatingDto ratingObj)
+        //public async Task<bool> UpdateRatingAsync(int id, RatingDto ratingObj)
+        //{
+        //    var existingRating = await _repositoryManager.Ratings.GetByIdAsync((int)id);
+        //    if (existingRating != null)
+        //    {
+        //        var ratingEntity = _mapper.Map<Rating>(ratingObj);
+        //        await _repositoryManager.Ratings.UpdateAsync( ratingEntity);
+        //        await _repositoryManager.SaveAsync();
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        public async Task<bool> UpdateRatingAsync(int id, RatingDto ratingDto)
         {
-            var existingRating = await _repositoryManager.Ratings.GetByIdAsync((int)id);
-            if (existingRating != null)
-            {
-                var ratingEntity = _mapper.Map<Rating>(ratingObj);
-                await _repositoryManager.Ratings.UpdateAsync(id, ratingEntity);
-                await _repositoryManager.SaveAsync();
-                return true;
-            }
-            return false;
+            var existingRating = await _repositoryManager.Ratings.GetByIdAsync(id);
+            if (existingRating == null)
+                return false;
+
+            // עדכון ידני לשדות שמותר לעדכן
+            existingRating.RatingValue = ratingDto.RatingValue;
+            existingRating.Comment = ratingDto.Comment ?? existingRating.Comment;
+            existingRating.UpdatedAt = DateTime.UtcNow;
+
+            await _repositoryManager.Ratings.UpdateAsync(existingRating);
+            await _repositoryManager.SaveAsync();
+            return true;
         }
 
         public async Task<bool> DeleteRatingAsync(int id)

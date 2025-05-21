@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EduShare.Api.PostModels;
+using EduShare.Api.UpdateModal;
 using EduShare.Core.DTOs;
 using EduShare.Core.IRepositories;
 using EduShare.Core.IServices;
@@ -57,15 +58,27 @@ namespace EduShare.Api.Controllers
 
         // PUT api/Folder/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> Put(int id, [FromBody] FolderPostModel folder)
+        public async Task<ActionResult<FolderDto>> Put(int id, [FromBody] FolderPostModel folder)
         {
             FolderDto folderDTO = _mapper.Map<FolderDto>(folder);
             var updateResult = await _folderService.UpdateFolderAsync(id, folderDTO);
-            if (!updateResult)
+            if (updateResult==null)
             {
                 return NotFound();
             }
-            return true;
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<FolderDto>> Patch(int id, [FromBody] FolderUpdateModal updateModel)
+        {
+            var folderDto = _mapper.Map<FolderDto>(updateModel);
+            var result = await _folderService.UpdateFolderAsync(id, folderDto);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
 
         // DELETE api/Folder/5
@@ -75,10 +88,11 @@ namespace EduShare.Api.Controllers
             var deleteResult = await _folderService.DeleteFolderAsync(id);
             if (!deleteResult)
             {
-                return NotFound();
+                return NotFound($"No file found with id: {id}");
             }
-            return true;
+            return NoContent();
         }
+        
 
         [HttpGet("{folderId}/contents")]
         public async Task<ActionResult<FoldersAndFilesDto>> GetFoldersAndFiles(int folderId)
@@ -106,17 +120,17 @@ namespace EduShare.Api.Controllers
             return Ok(foldersAndFiles);
         }
 
-        [HttpPut("{folderId}/rename")]
-        public async Task<ActionResult<FolderDto>> Rename(int folderId, [FromBody] string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-            {
-                return BadRequest("שם הקובץ לא יכול להיות ריק.");
-            }
+        //[HttpPut("{folderId}/rename")]
+        //public async Task<ActionResult<FolderDto>> Rename(int folderId, [FromBody] string newName)
+        //{
+        //    if (string.IsNullOrWhiteSpace(newName))
+        //    {
+        //        return BadRequest("שם הקובץ לא יכול להיות ריק.");
+        //    }
 
-            var result = await _folderService.RenameFolderAsync(folderId, newName);
-            return result!=null ? Ok(result) : NotFound();
-        }
+        //    var result = await _folderService.RenameFolderAsync(folderId, newName);
+        //    return result!=null ? Ok(result) : NotFound();
+        //}
 
         // DELETE api/Folder/5/recursive
         [HttpDelete("{id}/recursive")]

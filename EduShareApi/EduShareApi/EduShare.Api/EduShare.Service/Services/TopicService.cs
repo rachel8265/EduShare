@@ -44,17 +44,33 @@ namespace EduShare.Service.Services
             return null;
         }
 
-        public async Task<bool> UpdateTopicAsync(int id, TopicDto topicObj)
+        //public async Task<bool> UpdateTopicAsync(int id, TopicDto topicObj)
+        //{
+        //    var existingTopic = await _repositoryManager.Topics.GetByIdAsync((int)id);
+        //    if (existingTopic != null)
+        //    {
+        //        var topicEntity = _mapper.Map<Topic>(topicObj);
+        //        await _repositoryManager.Topics.UpdateAsync( topicEntity);
+        //        await _repositoryManager.SaveAsync();
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+
+        public async Task<bool> UpdateTopicAsync(int id, TopicDto topicDto)
         {
-            var existingTopic = await _repositoryManager.Topics.GetByIdAsync((int)id);
-            if (existingTopic != null)
-            {
-                var topicEntity = _mapper.Map<Topic>(topicObj);
-                await _repositoryManager.Topics.UpdateAsync((int)id, topicEntity);
-                await _repositoryManager.SaveAsync();
-                return true;
-            }
-            return false;
+            var existingTopic = await _repositoryManager.Topics.GetByIdAsync(id);
+            if (existingTopic == null)
+                return false;
+
+            existingTopic.Name = topicDto.Name ?? existingTopic.Name;
+            existingTopic.Description = topicDto.Description ?? existingTopic.Description;
+            existingTopic.UpdatedAt = DateTime.UtcNow;
+
+            await _repositoryManager.Topics.UpdateAsync(existingTopic);
+            await _repositoryManager.SaveAsync();
+            return true;
         }
 
         public async Task<bool> DeleteTopicAsync(int id)

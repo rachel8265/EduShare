@@ -43,24 +43,51 @@ namespace EduShare.Service.Services
             //return url;
         }
 
+        //public Task<string> GetDownloadUrlAsync(string fileName)
+        //{
+        //    var request = new GetPreSignedUrlRequest
+        //    {
+        //        BucketName = _bucketName,
+        //        Key =  fileName , // מסלול הקובץ ב-Bucket
+        //        Verb = HttpVerb.GET, // שינוי ל-GET להורדה
+        //        Expires = DateTime.UtcNow.AddMinutes(30)// ה-URL יהיה תקף ל-30 דקות
+        //         //ResponseHeaderOverrides = new ResponseHeaderOverrides
+        //         //{
+        //         //    ContentDisposition = $"attachment; filename=\"{fileName}\"" // הוספת כותרת הורדה
+        //         //}
+        //    };
+
+        //    string url = _s3Client.GetPreSignedURL(request);
+        //    return Task.FromResult(url);
+        //}
         public Task<string> GetDownloadUrlAsync(string fileName)
         {
+            // שם קובץ באנגלית לגיבוי
+            var safeAsciiFileName = TransliterateToAscii(fileName) ?? "downloaded-file";
             var request = new GetPreSignedUrlRequest
             {
-                BucketName = _bucketName,
-                Key =  fileName , // מסלול הקובץ ב-Bucket
-                Verb = HttpVerb.GET, // שינוי ל-GET להורדה
-                Expires = DateTime.UtcNow.AddMinutes(30)// ה-URL יהיה תקף ל-30 דקות
-                 //ResponseHeaderOverrides = new ResponseHeaderOverrides
-                 //{
-                 //    ContentDisposition = $"attachment; filename=\"{fileName}\"" // הוספת כותרת הורדה
-                 //}
+                BucketName = "edushare.testpnoren",
+                Key = fileName,
+                Verb = HttpVerb.GET,
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                ResponseHeaderOverrides = new ResponseHeaderOverrides
+                {
+                    // קידוד שם בעברית לפי התקן
+                    ContentDisposition = $"inline; filename=\"{safeAsciiFileName}\"; filename*=UTF-8''{Uri.EscapeDataString(fileName)}"
+                }
             };
 
             string url = _s3Client.GetPreSignedURL(request);
             return Task.FromResult(url);
         }
 
+        // פונקציה לעברית -> אנגלית פשוטה (מוסיפה תווים בלבד, אפשר לשפר עם transliteration רציני)
+        private string TransliterateToAscii(string input)
+        {
+            var normalized = input.Normalize(NormalizationForm.FormKD);
+            var bytes = Encoding.ASCII.GetBytes(normalized);
+            return Encoding.ASCII.GetString(bytes).Replace("?", "");
+        }
 
 
     }

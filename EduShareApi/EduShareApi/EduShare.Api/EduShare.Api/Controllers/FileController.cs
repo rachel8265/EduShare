@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using EduShare.Api.PostModels;
+using EduShare.Api.UpdateModal;
 using EduShare.Core.DTOs;
 using EduShare.Core.IRepositories;
 using EduShare.Core.IServices;
+using EduShare.Data.Repository;
 using EduShare.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -55,11 +57,24 @@ namespace EduShare.Api.Controllers
         }
 
         // PUT api/File/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> Put(int id, [FromBody] FilePostModel file)
+        //[HttpPut("{id}")]
+        //public async Task<ActionResult<bool>> Put(int id, [FromBody] FilePostModel file)
+        //{
+        //    FileDto FileDto = _mapper.Map<FileDto>(file);
+        //    return await _fileService.UpdateFileAsync(id, FileDto) == false;
+        //}
+
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<FileDto>> Patch(int id, [FromBody] FileUpdateModel updateModel)
         {
-            FileDto FileDto = _mapper.Map<FileDto>(file);
-            return await _fileService.UpdateFileAsync(id, FileDto) == false;
+            var fileDto = _mapper.Map<FileDto>(updateModel);
+            var result = await _fileService.UpdatePartialAsync(id, fileDto);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
 
         // DELETE api/File/5
@@ -103,37 +118,61 @@ namespace EduShare.Api.Controllers
         }
 
 
+        //[HttpPut("{fileId}/softDelete")]
+        //public async Task<IActionResult> SoftDelete(int fileId)
+        //{
+        //    try
+        //    {
+        //        await _fileService.SoftDeleteFileAsync(fileId);
+        //        return Ok($"הקובץ עם ID {fileId} נמחק בהצלחה.");
+        //    }
+        //    catch (InvalidOperationException ex)
+        //    {
+        //        return NotFound(ex.Message+"טטטטטטטטטט"); // מחזיר 404 אם הקובץ לא נמצא
+        //    }
+
+        //}
         [HttpPut("{fileId}/softDelete")]
         public async Task<IActionResult> SoftDelete(int fileId)
         {
             try
             {
-                await _fileService.SoftDeleteFileAsync(fileId);
-                return Ok($"הקובץ עם ID {fileId} נמחק בהצלחה.");
+                var result = await _fileService.SoftDeleteFileAsync(fileId);
+                if (!result)
+                    return NotFound($"הקובץ עם ID {fileId} לא נמצא.");
+
+                return NoContent(); // 204 - הצלחה, ללא תוכן
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                return NotFound(ex.Message+"טטטטטטטטטט"); // מחזיר 404 אם הקובץ לא נמצא
+                // אפשר להוסיף לוג כאן
+                return StatusCode(500, $"ארעה שגיאה במחיקת הקובץ: {ex.Message}");
             }
-           
         }
 
-        [HttpPut("{fileId}/rename")]
-        public async Task<ActionResult<FileDto>> Rename(int fileId, [FromBody] string newName)
+        [HttpGet("shared")]
+        public async Task<ActionResult<List<FileDto>>> GetSharedFiles()
         {
-            if (string.IsNullOrWhiteSpace(newName))
-            {
-                return BadRequest("The file name cannot be empty.");
-            }
-
-            var result = await _fileService.RenameFileAsync(fileId, newName);
-            if (result == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(result);
+            var files = await _fileService.GetSharedFilesAsync();
+            return Ok(files);
         }
+
+        //[HttpPut("{fileId}/rename")]
+        //public async Task<ActionResult<FileDto>> Rename(int fileId, [FromBody] string newName)
+        //{
+        //    if (string.IsNullOrWhiteSpace(newName))
+        //    {
+        //        return BadRequest("The file name cannot be empty.");
+        //    }
+
+        //    var result = await _fileService.RenameFileAsync(fileId, newName);
+        //    if (result == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(result);
+        //}
 
     }
 

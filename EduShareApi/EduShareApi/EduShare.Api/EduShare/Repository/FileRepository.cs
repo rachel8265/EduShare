@@ -39,20 +39,24 @@ namespace EduShare.Data.Repository
             return file;
         }
 
-        public async Task<bool> UpdateAsync(int id, File file)
-        {
-            var existFile = await GetByIdAsync(id);
-            if (existFile == null)
-                return false;
+        //public async Task<bool> UpdateAsync(int id, File file)
+        //{
+        //    var existFile = await GetByIdAsync(id);
+        //    if (existFile == null)
+        //        return false;
 
-            existFile.FileName = file.FileName ?? existFile.FileName;
-            existFile.FileUrl = file.FileUrl ?? existFile.FileUrl;
-            existFile.FileSize = file.FileSize > 0 ? file.FileSize : existFile.FileSize;
-            existFile.FileType = file.FileType ?? existFile.FileType;
-            existFile.IsPublic = file.IsPublic;
-            existFile.UpdatedAt = DateTime.Now; // Update timestamp
-            _dataContext.Files.Update(existFile);
-            return true;
+        //    existFile.FileName = file.FileName ?? existFile.FileName;
+        //    //existFile.FileUrl = file.FileUrl ?? existFile.FileUrl;
+        //    //existFile.FileSize = file.FileSize > 0 ? file.FileSize : existFile.FileSize;
+        //    //existFile.FileType = file.FileType ?? existFile.FileType;
+        //    existFile.IsPublic = file.IsPublic;
+        //    existFile.UpdatedAt = DateTime.Now; // Update timestamp
+        //    _dataContext.Files.Update(existFile);
+        //    return true;
+        //}
+        public async Task UpdateAsync(File file)
+        {
+                _dataContext.Files.Update(file);
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -101,5 +105,15 @@ namespace EduShare.Data.Repository
         //        .Where(f => f.TopicId == folderId && !f.IsDeleted)
         //        .ToListAsync();
         //}
+        public async Task<IEnumerable<File>> GetSharedFilesAsync()
+        {
+            return await _dataContext.Files
+                .Where(f => f.IsPublic && !f.IsDeleted) // או כל תנאי אחר שמגדיר "משותף"
+                .Include(f => f.User)
+                .Include(f => f.Topic)
+                .Include(f => f.Ratings)
+                .Include(f => f.Recommendations)
+                .ToListAsync();
+        }
     }
 }

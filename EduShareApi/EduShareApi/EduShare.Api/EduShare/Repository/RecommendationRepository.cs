@@ -36,15 +36,16 @@ namespace EduShare.Data.Repository
             return recommendation;
         }
 
-        public async Task<bool> UpdateAsync(int id, Recommendation recommendation)
+        public async Task UpdateAsync(Recommendation recommendation)
         {
-            var existRecommendation = await GetByIdAsync(id);
-            if (existRecommendation == null)
-                return false;
+            //var existRecommendation = await GetByIdAsync(id);
+            //if (existRecommendation == null)
+            //    return false;
 
-            existRecommendation.Comment = recommendation.Comment ?? existRecommendation.Comment;
-            existRecommendation.UpdatedAt = DateTime.Now; // Update timestamp
-            return true;
+            //existRecommendation.Comment = recommendation.Comment ?? existRecommendation.Comment;
+            //existRecommendation.UpdatedAt = DateTime.Now; // Update timestamp
+            //return true;
+            _dataContext.Recommendations.Update(recommendation);
         }
 
         public async Task<bool> DeleteAsync(int id)

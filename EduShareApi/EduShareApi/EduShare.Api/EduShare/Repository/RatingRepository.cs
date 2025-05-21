@@ -36,16 +36,17 @@ namespace EduShare.Data.Repository
             return rating;
         }
 
-        public async Task<bool> UpdateAsync(int id, Rating rating)
+        public async Task UpdateAsync( Rating rating)
         {
-            var existRating = await GetByIdAsync(id);
-            if (existRating == null)
-                return false;
+            //var existRating = await GetByIdAsync(id);
+            //if (existRating == null)
+            //    return false;
 
-            existRating.RatingValue = rating.RatingValue;
-            existRating.Comment = rating.Comment ?? existRating.Comment;
-            existRating.UpdatedAt = DateTime.Now; // Update timestamp
-            return true;
+            //existRating.RatingValue = rating.RatingValue;
+            //existRating.Comment = rating.Comment ?? existRating.Comment;
+            //existRating.UpdatedAt = DateTime.Now; // Update timestamp
+            //return true;
+            _dataContext.Ratings.Update(rating);
         }
 
         public async Task<bool> DeleteAsync(int id)

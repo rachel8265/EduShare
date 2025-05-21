@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EduShare.Api.Controllers
@@ -64,13 +65,13 @@ namespace EduShare.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel userLogin)
         {
-            var UserDto = _mapper.Map<UserDto>(userLogin);
+            var userDto = _mapper.Map<UserDto>(userLogin);
             var user = await _usersService.ValidateUserAsync(userLogin.Email, userLogin.Password);
             if (user != null)
             {
                 
-                var tokenString = _usersService.GenerateJwtToken(UserDto);
-                return Ok(new { Token = tokenString.Result });
+                var tokenString = _usersService.GenerateJwtToken(userDto);
+                return Ok(new { User = user, Token = tokenString });
             }
             return Unauthorized();
         }
@@ -86,7 +87,9 @@ namespace EduShare.Api.Controllers
                 return BadRequest("User already exists.");
             }
 
-            return Ok(result);
+            var tokenString = await _usersService.GenerateJwtToken(result);
+           return Ok(new { User = result, Token = tokenString });
+          
         }
 
         // PUT api/User/5
@@ -104,6 +107,24 @@ namespace EduShare.Api.Controllers
         public async Task<ActionResult<bool>> Delete(int id)
         {
             return await _usersService.DeleteUserAsync(id);
+        }
+
+
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            // שלוף את המייל מתוך ה-Claims של ה-JWT
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+                return Unauthorized();
+
+            var user = await _usersService.GetUserByEmailAsync(email);
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace EduShare.Core.IServices
         Task<string> GenerateJwtToken(UserDto user);
         Task<UserDto> ValidateUserAsync(string email, string password);
         Task<UserDto?> RegisterUserAsync(UserDto user);
+        Task<UserDto?> GetUserByEmailAsync(string email);
 
 
     }

@@ -3,6 +3,7 @@ using EduShare.Core.DTOs;
 using EduShare.Core.Entities;
 using EduShare.Core.IRepositories;
 using EduShare.Core.IServices;
+using EduShare.Data.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -39,31 +40,66 @@ namespace EduShare.Service.Services
             return _mapper.Map<FolderDto>(folderEntity);
         }
 
-        public async Task<bool> UpdateFolderAsync(int id, FolderDto folderPostModel)
+        //public async Task<bool> UpdateFolderAsync(int id, FolderDto folderPostModel)
+        //{
+        //    var existingFolder = await _repositoryManager.Folders.GetByIdAsync(id);
+        //    if (existingFolder != null)
+        //    {
+        //        _mapper.Map(folderPostModel, existingFolder);
+        //        await _repositoryManager.Folders.UpdateAsync(id,existingFolder);
+        //        await _repositoryManager.SaveAsync(); // שמירה על השינויים
+        //        return true;
+        //    }
+        //    return false;
+        //}
+        public async Task<FolderDto> UpdateFolderAsync(int id, FolderDto folderPostModel)
         {
             var existingFolder = await _repositoryManager.Folders.GetByIdAsync(id);
-            if (existingFolder != null)
-            {
-                _mapper.Map(folderPostModel, existingFolder);
-                await _repositoryManager.Folders.UpdateAsync(id,existingFolder);
-                await _repositoryManager.SaveAsync(); // שמירה על השינויים
-                return true;
-            }
-            return false;
+            if (existingFolder == null)
+                return null;
+
+            if (!string.IsNullOrWhiteSpace(folderPostModel.Name))
+                existingFolder.Name = folderPostModel.Name;
+            //if (folderPostModel.ParentFolderId.HasValue)
+            //    existingFolder.ParentFolderId = folderPostModel.ParentFolderId.Value;
+
+            existingFolder.UpdatedAt = DateTime.UtcNow;
+
+            await _repositoryManager.Folders.UpdateAsync(existingFolder); // שם אתה לא צריך להעביר id
+            await _repositoryManager.SaveAsync();
+            return _mapper.Map<FolderDto>(existingFolder);
+
         }
+        //public async Task<bool> DeleteFolderAsync(int id)
+        //{
+        //    var existingFolder = await _repositoryManager.Folders.GetByIdAsync(id);
+        //    if (existingFolder != null)
+        //    {
+        //        await _repositoryManager.Folders.DeleteAsync(id);
+        //        await _repositoryManager.SaveAsync(); // שמירה על השינויים
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
         public async Task<bool> DeleteFolderAsync(int id)
         {
-            var existingFolder = await _repositoryManager.Folders.GetByIdAsync(id);
-            if (existingFolder != null)
-            {
-                await _repositoryManager.Folders.DeleteAsync(id);
-                await _repositoryManager.SaveAsync(); // שמירה על השינויים
-                return true;
-            }
-            return false;
+            return await _repositoryManager.Folders.DeleteAsync(id);
         }
 
+        public async Task<bool> SoftDeleteFolderAsync(int id)
+        {
+            var folder = await _repositoryManager.Folders.GetByIdAsync(id);
+            if (folder == null)
+                return false;
+
+            folder.IsDeleted = true;
+            folder.UpdatedAt = DateTime.UtcNow;
+
+            await _repositoryManager.Folders.UpdateAsync(folder);
+            await _repositoryManager.SaveAsync();
+            return true;
+        }
         public async Task<FoldersAndFilesDto> GetSubfoldersAndFilesByFolderIdAsync(int folderId)
         {
             var folders = await _repositoryManager.Folders.GetAllAsync();
@@ -103,18 +139,18 @@ namespace EduShare.Service.Services
             return result;
         }
 
-        public async Task<FolderDto> RenameFolderAsync(int id, string newName)
-        {
-            var folder = await _repositoryManager.Folders.GetByIdAsync(id);
-            if (folder == null)
-                return null;
+        //public async Task<FolderDto> RenameFolderAsync(int id, string newName)
+        //{
+        //    var folder = await _repositoryManager.Folders.GetByIdAsync(id);
+        //    if (folder == null)
+        //        return null;
 
-            folder.Name = newName;
-            await _repositoryManager.Folders.UpdateAsync(id, folder);
-            await _repositoryManager.SaveAsync();
-            return _mapper.Map<FolderDto>(folder);
+        //    folder.Name = newName;
+        //    await _repositoryManager.Folders.UpdateAsync( folder);
+        //    await _repositoryManager.SaveAsync();
+        //    return _mapper.Map<FolderDto>(folder);
              
-        }
+        //}
 
         public async Task<bool> DeleteFolderRecursivelyAsync(int id)
         {
@@ -139,13 +175,13 @@ namespace EduShare.Service.Services
             {
                 file.IsDeleted = true;
                 file.UpdatedAt = DateTime.UtcNow;
-                await _repositoryManager.Files.UpdateAsync(file.Id, file);
+                await _repositoryManager.Files.UpdateAsync( file);
             }
 
             // Mark the folder itself as deleted
             folder.IsDeleted = true;
             folder.UpdatedAt = DateTime.UtcNow;
-            await _repositoryManager.Folders.UpdateAsync(id, folder);
+            await _repositoryManager.Folders.UpdateAsync( folder);
 
             await _repositoryManager.SaveAsync();
             return true;

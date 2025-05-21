@@ -55,17 +55,33 @@ namespace EduShare.Service.Services
             return null;
         }
 
-        public async Task<bool> UpdateUserAsync(int id, UserDto userObj)
+        //public async Task<bool> UpdateUserAsync(int id, UserDto userObj)
+        //{
+        //    var existingUser = await _repositoryManager.Users.GetByIdAsync((int)id);
+        //    if (existingUser != null)
+        //    {
+        //        var userEntity = _mapper.Map<User>(userObj);
+        //        await _repositoryManager.Users.UpdateAsync( userEntity);
+        //        await _repositoryManager.SaveAsync();
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        public async Task<bool> UpdateUserAsync(int id, UserDto userDto)
         {
-            var existingUser = await _repositoryManager.Users.GetByIdAsync((int)id);
-            if (existingUser != null)
-            {
-                var userEntity = _mapper.Map<User>(userObj);
-                await _repositoryManager.Users.UpdateAsync((int)id, userEntity);
-                await _repositoryManager.SaveAsync();
-                return true;
-            }
-            return false;
+            var existingUser = await _repositoryManager.Users.GetByIdAsync(id);
+            if (existingUser == null)
+                return false;
+
+            existingUser.Email = userDto.Email ?? existingUser.Email;
+            existingUser.FullName = userDto.FullName ?? existingUser.FullName;
+            existingUser.Password = userDto.Password ?? existingUser.Password;
+            existingUser.UpdatedAt = DateTime.UtcNow;
+
+            await _repositoryManager.Users.UpdateAsync(existingUser);
+            await _repositoryManager.SaveAsync();
+            return true;
         }
 
         public async Task<bool> DeleteUserAsync(int id)
@@ -80,11 +96,11 @@ namespace EduShare.Service.Services
             return false;
         }
 
-        //public async Task<UserDto?> GetUserByEmailAsync(string email)
-        //{
-        //    var user = await _repositoryManager.Users.GetUserByEmailAsync(email);
-        //    return _mapper.Map<UserDto>(user);
-        //}
+        public async Task<UserDto?> GetUserByEmailAsync(string email)
+        {
+            var user = await _repositoryManager.Users.GetUserByEmailAsync(email);
+            return _mapper.Map<UserDto>(user);
+        }
         public async Task<UserDto> ValidateUserAsync(string email, string password)
         {
             var user = await _repositoryManager.Users.GetUserByEmailAsync(email);
@@ -118,7 +134,7 @@ namespace EduShare.Service.Services
                     issuer: Env.GetString("JWT_ISSUER"),
             audience: Env.GetString("JWT_AUDIENCE"),
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(720),
                 signingCredentials: credentials
             );
 

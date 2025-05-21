@@ -44,17 +44,32 @@ namespace EduShare.Service.Services
             return null;
         }
 
-        public async Task<bool> UpdateRecommendationAsync(int id, RecommendationDto recommendationObj)
+        //public async Task<bool> UpdateRecommendationAsync(int id, RecommendationDto recommendationObj)
+        //{
+        //    var existingRecommendation = await _repositoryManager.Recommendations.GetByIdAsync((int)id);
+        //    if (existingRecommendation != null)
+        //    {
+        //        var recommendationEntity = _mapper.Map<Recommendation>(recommendationObj);
+        //        await _repositoryManager.Recommendations.UpdateAsync( recommendationEntity);
+        //        await _repositoryManager.SaveAsync();
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+
+        public async Task<bool> UpdateRecommendationAsync(int id, RecommendationDto recommendationDto)
         {
-            var existingRecommendation = await _repositoryManager.Recommendations.GetByIdAsync((int)id);
-            if (existingRecommendation != null)
-            {
-                var recommendationEntity = _mapper.Map<Recommendation>(recommendationObj);
-                await _repositoryManager.Recommendations.UpdateAsync((int)id, recommendationEntity);
-                await _repositoryManager.SaveAsync();
-                return true;
-            }
-            return false;
+            var existingRecommendation = await _repositoryManager.Recommendations.GetByIdAsync(id);
+            if (existingRecommendation == null)
+                return false;
+
+            existingRecommendation.Comment = recommendationDto.Comment ?? existingRecommendation.Comment;
+            existingRecommendation.UpdatedAt = DateTime.UtcNow;
+
+            await _repositoryManager.Recommendations.UpdateAsync(existingRecommendation);
+            await _repositoryManager.SaveAsync();
+            return true;
         }
 
         public async Task<bool> DeleteRecommendationAsync(int id)

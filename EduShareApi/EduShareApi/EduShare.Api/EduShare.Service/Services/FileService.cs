@@ -3,6 +3,7 @@ using EduShare.Core.DTOs;
 using EduShare.Core.Entities;
 using EduShare.Core.IRepositories;
 using EduShare.Core.IServices;
+using EduShare.Data;
 using EduShare.Data.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -46,17 +47,41 @@ namespace EduShare.Service.Services
             return null;
         }
 
-        public async Task<bool> UpdateFileAsync(int id, FileDto fileObj)
+        public async Task<FileDto> UpdateFileAsync(int id, FileDto fileObj)
         {
-            var existingFile = await _repositoryManager.Files.GetByIdAsync(id);
-            if (existingFile != null)
+            var existFile = await _repositoryManager.Files.GetByIdAsync(id);
+            if (existFile != null)
             {
                 var fileEntity = _mapper.Map<File>(fileObj);
-                await _repositoryManager.Files.UpdateAsync(id, fileEntity);
+                await _repositoryManager.Files.UpdateAsync( fileEntity);
                 await _repositoryManager.SaveAsync();
-                return true;
+                var fileDTO= _mapper.Map<FileDto>(fileEntity);
+
+                return fileDTO;
             }
-            return false;
+            return null;
+        }
+        public async Task<FileDto> UpdatePartialAsync(int id, FileDto updateModel)
+        {
+            var existFile = await _repositoryManager.Files.GetByIdAsync(id);
+            if (existFile == null)
+                return null;
+
+            if (!string.IsNullOrWhiteSpace(updateModel.FileName))
+                existFile.FileName = updateModel.FileName;
+
+            if (updateModel.IsPublic != null)
+                existFile.IsPublic = updateModel.IsPublic;
+
+            if (updateModel.TopicId != null)
+                existFile.TopicId = updateModel.TopicId; // עדכון נושא
+
+            // Update additional fields only if provided  
+
+            existFile.UpdatedAt = DateTime.UtcNow; // Always update timestamp  
+            _repositoryManager.Files.UpdateAsync(existFile);
+            await _repositoryManager.SaveAsync();
+            return _mapper.Map<FileDto>(existFile);
         }
 
         public async Task<bool> DeleteFileAsync(int id)
@@ -91,23 +116,28 @@ namespace EduShare.Service.Services
                 return false;
 
             file.IsDeleted = true;
-            await _repositoryManager.Files.UpdateAsync(id, file);
+            await _repositoryManager.Files.UpdateAsync( file);
 
             await _repositoryManager.SaveAsync();
             return true;
         }
 
-        public async Task<FileDto?> RenameFileAsync(int id, string newName)
+        public async Task<IEnumerable<FileDto>> GetSharedFilesAsync()
         {
-            var file = await _repositoryManager.Files.GetByIdAsync(id);
-            if (file == null)
-                return null;
-
-            file.FileName = newName;
-            await _repositoryManager.Files.UpdateAsync(id, file);
-            await _repositoryManager.SaveAsync();
-            return _mapper.Map<FileDto>(file);
-
+            var files = await _repositoryManager.Files.GetSharedFilesAsync();
+            return _mapper.Map<IEnumerable<FileDto>>(files);
         }
+        //public async Task<FileDto?> RenameFileAsync(int id, string newName)
+        //{
+        //    var file = await _repositoryManager.Files.GetByIdAsync(id);
+        //    if (file == null)
+        //        return null;
+
+        //    file.FileName = newName;
+        //    await _repositoryManager.Files.UpdateAsync(id, file);
+        //    await _repositoryManager.SaveAsync();
+        //    return _mapper.Map<FileDto>(file);
+
+        //}
     }
 }

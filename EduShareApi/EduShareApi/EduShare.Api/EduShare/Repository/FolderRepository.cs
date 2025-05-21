@@ -38,27 +38,43 @@ namespace EduShare.Data.Repository
             return folder;
         }
 
-        public async Task<bool> UpdateAsync(int id, Folder folder)
-        {
-            var existingFolder = await GetByIdAsync(id);
-            if (existingFolder == null)
-                return false;
+        //public async Task<bool> UpdateAsync(int id, Folder folder)
+        //{
+        //    var existingFolder = await GetByIdAsync(id);
+        //    if (existingFolder == null)
+        //        return false;
 
-            existingFolder.Name = folder.Name;
-            existingFolder.ParentFolderId = folder.ParentFolderId;
-            existingFolder.UserId = folder.UserId;
-            existingFolder.UpdatedAt = DateTime.UtcNow; // Update timestamp
-            return true;
+        //    existingFolder.Name = folder.Name;
+        //    existingFolder.ParentFolderId = folder.ParentFolderId;
+        //    existingFolder.UserId = folder.UserId;
+        //    existingFolder.UpdatedAt = DateTime.UtcNow; // Update timestamp
+        //    return true;
+        //}
+
+        public async Task UpdateAsync(Folder folder)
+        {
+            _context.Folders.Update(folder);
+            await _context.SaveChangesAsync();
         }
+
+        //public async Task<bool> DeleteAsync(int id)
+        //{
+        //    var folder = await GetByIdAsync(id);
+        //    if (folder == null)
+        //        return false;
+
+        //    folder.IsDeleted = true; // מחיקה רכה
+        //    await UpdateAsync(folder.Id, folder);
+        //    return true;
+        //}
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var folder = await GetByIdAsync(id);
-            if (folder == null)
+            var entity = await _context.Files.FindAsync(id);
+            if (entity == null)
                 return false;
 
-            folder.IsDeleted = true; // מחיקה רכה
-            await UpdateAsync(folder.Id, folder);
+            _context.Files.Remove(entity);
             return true;
         }
 

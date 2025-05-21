@@ -34,16 +34,17 @@ namespace EduShare.Data.Repository
             return topic;
         }
 
-        public async Task<bool> UpdateAsync(int id, Topic topic)
+        public async Task UpdateAsync(Topic topic)
         {
-            var existTopic = await GetByIdAsync(id);
-            if (existTopic == null)
-                return false;
+            //var existTopic = await GetByIdAsync(id);
+            //if (existTopic == null)
+            //    return false;
 
-            existTopic.Name = topic.Name ?? existTopic.Name;
-            existTopic.Description = topic.Description ?? existTopic.Description;
-            existTopic.UpdatedAt = DateTime.Now; // Update timestamp
-            return true;
+            //existTopic.Name = topic.Name ?? existTopic.Name;
+            //existTopic.Description = topic.Description ?? existTopic.Description;
+            //existTopic.UpdatedAt = DateTime.Now; // Update timestamp
+            //return true;
+            _dataContext.Topics.Update(topic);
         }
 
         public async Task<bool> DeleteAsync(int id)

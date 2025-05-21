@@ -12,6 +12,8 @@ namespace EduShare.Core.IRepositories
     {
         Task<IEnumerable<File>> GetSubfilesByParentIdAsync(int folderId);
         Task<IEnumerable<File>> GetRootFilesByUserIdAsync(int userId);
+        Task<IEnumerable<File>> GetSharedFilesAsync();
+
         //Task<IEnumerable<File>> GetSubfilesByFolderIdAsync(int folderId);
         //Task<bool> SoftDeleteAsync(int id);
 

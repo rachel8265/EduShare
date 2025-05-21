@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EduShare.Api.PostModels;
+using EduShare.Api.UpdateModal;
 using EduShare.Core.DTOs;
 
 namespace EduShare.Api
@@ -15,7 +16,11 @@ namespace EduShare.Api
             CreateMap<UserPostModel, UserDto>();
             CreateMap<LoginModel, UserDto>();
             CreateMap<FolderPostModel, FolderDto>();
-           
+
+
+            CreateMap<FileUpdateModel, FileDto>();
+            CreateMap<FolderUpdateModal, FolderDto>();
+
         }
     }
 }

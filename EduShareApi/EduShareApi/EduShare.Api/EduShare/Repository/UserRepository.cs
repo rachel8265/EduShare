@@ -37,17 +37,20 @@ namespace EduShare.Data.Repository
             return user;
         }
 
-        public async Task<bool> UpdateAsync(int id, User user)
+        public async Task UpdateAsync( User user)
         {
-            var existUser = await GetByIdAsync(id);
-            if (existUser == null)
-                return false;
+            //var existUser = await GetByIdAsync(id);
+            //if (existUser == null)
+            //    return false;
 
-            existUser.Email = user.Email ?? existUser.Email;
-            existUser.FullName = user.FullName ?? existUser.FullName;
-            existUser.Password = user.Password ?? existUser.Password;
-            existUser.UpdatedAt = DateTime.Now; // Update timestamp
-            return true;
+            //existUser.Email = user.Email ?? existUser.Email;
+            //existUser.FullName = user.FullName ?? existUser.FullName;
+            //existUser.Password = user.Password ?? existUser.Password;
+            //existUser.UpdatedAt = DateTime.Now; // Update timestamp
+            //return true;
+        
+            _dataContext.Users.Update(user);
+        
         }
 
         public async Task<bool> DeleteAsync(int id)
