@@ -92,13 +92,23 @@ namespace EduShare.Api.Controllers
         }
 
         // GET api/File/presigned-url
-        [HttpGet("presigned-url")]
-        public async Task<IActionResult> GetPresignedUrl([FromQuery] FilePostModel file)
-        {
-            string url = await _s3Service.GeneratePresignedUrlAsync(file.FileName ,file.FileType);
-            FileDto fileDto = _mapper.Map<FileDto>(file);
+        //[HttpGet("presigned-url")]
+        //public async Task<IActionResult> GetPresignedUrl([FromQuery] FilePostModel file)
+        //{
+        //    string url = await _s3Service.GeneratePresignedUrlAsync(file.FileName ,file.FileType);
+        //    FileDto fileDto = _mapper.Map<FileDto>(file);
 
-           var f= _fileService.CreateFileAsync(fileDto);
+        //   var f= _fileService.CreateFileAsync(fileDto);
+        //    return Ok(new { url });
+        //}
+
+        [HttpGet("presigned-url")]
+        public async Task<IActionResult> GetPresignedUrl([FromQuery] string s3Key,string fileType)
+        {
+            string url = await _s3Service.GeneratePresignedUrlAsync(s3Key,fileType);
+            //FileDto fileDto = _mapper.Map<FileDto>(file);
+
+            //var f = _fileService.CreateFileAsync(fileDto);
             return Ok(new { url });
         }
 
@@ -141,7 +151,7 @@ namespace EduShare.Api.Controllers
                 if (!result)
                     return NotFound($"הקובץ עם ID {fileId} לא נמצא.");
 
-                return NoContent(); // 204 - הצלחה, ללא תוכן
+                return Ok(true); // 204 - הצלחה, ללא תוכן
             }
             catch (Exception ex)
             {

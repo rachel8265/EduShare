@@ -1,0 +1,22 @@
+<!-- <svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="40" r="32" fill="#43d19e"/>
+  <circle cx="42" cy="38" r="7" fill="#fff"/>
+  <circle cx="66" cy="28" r="7" fill="#fff"/>
+  <circle cx="64" cy="54" r="7" fill="#fff"/>
+  <line x1="48" y1="41" x2="64" y2="28" stroke="#fff" stroke-width="3" />
+  <line x1="48" y1="41" x2="64" y2="54" stroke="#fff" stroke-width="3" />
+  <text x="95" y="50" font-family="Segoe UI, Arial, sans-serif" font-size="34" fill="#222" font-weight="bold" letter-spacing="1.5">EduShare</text>
+  <text x="97" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#43d19e" font-weight="bold">קהילה ושיתוף קבצים למורות</text>
+</svg> -->
+<svg width="270" height="80" viewBox="0 0 270 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- שלוש דמויות -->
+  <circle cx="60" cy="40" r="12" fill="#43d19e"/>
+  <circle cx="80" cy="46" r="10" fill="#A5D6A7"/>
+  <circle cx="45" cy="48" r="9" fill="#66BB6A"/>
+  <!-- אייקון קובץ -->
+  <rect x="92" y="28" width="20" height="26" rx="4" fill="#fff" stroke="#43d19e" stroke-width="2"/>
+  <rect x="100" y="32" width="8" height="10" rx="2" fill="#43d19e"/>
+  <!-- טקסט -->
+  <text x="125" y="50" font-family="Segoe UI, Arial, sans-serif" font-size="32" fill="#222" font-weight="bold">EduShare</text>
+  <text x="125" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#43d19e" font-weight="bold">קהילה ושיתוף לקבצים חינוכיים</text>
+</svg>
