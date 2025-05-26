@@ -1,0 +1,231 @@
+<div class="users-container">
+  <!-- Header -->
+  <div class="users-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="users-title">
+          <mat-icon class="title-icon">people</mat-icon>
+          User Management
+        </h1>
+        <p class="users-subtitle">Manage your team members and their permissions</p>
+      </div>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" class="add-user-btn" (click)="openAddDialog()">
+          <mat-icon>person_add</mat-icon>
+          Add New User
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading users...</p>
+  </div>
+
+  <!-- Users Content -->
+  <div *ngIf="!loading" class="users-content">
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card users-stat">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{totalUsers}}</h3>
+            <p class="stat-label">Total Users</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card active-stat">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>visibility</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{activeUsers}}</h3>
+            <p class="stat-label">Active Users</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card admin-stat">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>admin_panel_settings</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{adminUsers}}</h3>
+            <p class="stat-label">Admins</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card editor-stat">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>edit</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-number">{{editorUsers}}</h3>
+            <p class="stat-label">Editors</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="search-card">
+      <div class="search-container">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search users...</mat-label>
+          <input matInput 
+                 [(ngModel)]="searchTerm" 
+                 (input)="applyFilters()"
+                 placeholder="Search by name or email">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Role</mat-label>
+          <mat-select [(value)]="filterRole" (selectionChange)="applyFilters()">
+            <mat-option *ngFor="let role of roles" [value]="role">
+              {{role}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Status</mat-label>
+          <mat-select [(value)]="filterStatus" (selectionChange)="applyFilters()">
+            <mat-option *ngFor="let status of statuses" [value]="status">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <button *ngIf="searchTerm || filterRole !== 'All' || filterStatus !== 'All'" 
+                mat-icon-button (click)="clearSearch()" class="clear-search">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Users Grid -->
+    <div class="users-grid">
+      <div 
+        *ngFor="let user of filteredUsers; let i = index" 
+        class="user-card">
+        
+        <div class="user-card-header">
+          <div class="user-avatar" [style.background]="getUserColor(i)">
+            <mat-icon>{{getUserIcon(user.role)}}</mat-icon>
+          </div>
+          <div class="user-info">
+            <h3 class="user-name">{{user.fullName}}</h3>
+            <p class="user-email">{{user.email}}</p>
+            <p class="user-role">{{user.role}}</p>
+          </div>
+        </div>
+
+        <div class="user-card-body">
+          <div class="user-details">
+            <div class="user-detail-item">
+              <mat-icon>schedule</mat-icon>
+              <span>Joined {{user.createdAt | date:'shortDate'}}</span>
+            </div>
+            <div class="user-detail-item" *ngIf="user.lastLoginAt">
+              <mat-icon>login</mat-icon>
+              <span>Last login {{user.lastLoginAt | date:'shortDate'}}</span>
+            </div>
+          </div>
+
+          <!-- Status and Role Badges -->
+          <div class="user-badges">
+            <mat-chip-set>
+              <mat-chip [color]="getStatusChipColor(user.isDeleted)">
+                {{user.isDeleted ? 'Deleted' : 'Active'}}
+              </mat-chip>
+              <mat-chip [color]="getRoleChipColor(user.role)">
+                {{user.role}}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+
+        <div class="user-card-actions">
+          <!-- <button mat-icon-button 
+                  color="primary" 
+                  (click)="openEditDialog(user)"
+                  matTooltip="Edit User">
+            <mat-icon>edit</mat-icon>
+          </button> -->
+          <button mat-icon-button 
+                  color="warn" 
+                  (click)="deleteUser(user)"
+                  matTooltip="Delete User">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <!-- <button mat-icon-button 
+                  color="accent" 
+                  matTooltip="User Profile">
+            <mat-icon>account_circle</mat-icon>
+          </button> -->
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredUsers.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">people</mat-icon>
+        <h3>No Users Found</h3>
+        <p *ngIf="searchTerm || filterRole !== 'All' || filterStatus !== 'All'; else noUsersMessage">
+          No users match your search criteria.
+        </p>
+        <ng-template #noUsersMessage>
+          <p>Start by adding your first team member.</p>
+          <button mat-raised-button color="primary" (click)="openAddDialog()">
+            <mat-icon>person_add</mat-icon>
+            Add First User
+          </button>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <!-- <div class="quick-actions" *ngIf="filteredUsers.length > 0">
+      <div class="actions-card">
+        <div class="actions-header">
+          <h3>
+            <mat-icon>flash_on</mat-icon>
+            Quick Actions
+          </h3>
+        </div>
+        <div class="actions-content">
+          <div class="actions-grid">
+            <button mat-raised-button color="primary" (click)="openAddDialog()">
+              <mat-icon>person_add</mat-icon>
+              Add User
+            </button>
+            <button mat-raised-button color="accent">
+              <mat-icon>import_export</mat-icon>
+              Bulk Import
+            </button>
+            <button mat-raised-button>
+              <mat-icon>download</mat-icon>
+              Export List
+            </button>
+            <button mat-raised-button>
+              <mat-icon>settings</mat-icon>
+              User Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div> -->

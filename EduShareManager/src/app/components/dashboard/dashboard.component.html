@@ -1,0 +1,294 @@
+<!-- <mat-toolbar color="primary">
+  <span>מערכת ניהול EduShare</span>
+</mat-toolbar>
+
+<main class="dashboard-container">
+  <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="space-around stretch" class="dashboard-cards">
+    <mat-card>
+      <mat-card-title>משתמשים</mat-card-title>
+      <mat-card-content>
+        <h2>{{usersCount}}</h2>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>נושאים</mat-card-title>
+      <mat-card-content>
+        <h2>{{topicsCount}}</h2>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>קבצים</mat-card-title>
+      <mat-card-content>
+        <h2>{{filesCount}}</h2>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <section class="charts-section">
+    <ngx-charts-bar-vertical
+      [results]="filesByTopic"
+      scheme="vivid"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="true"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxisLabel]="'נושא'"
+      [yAxisLabel]="'מספר קבצים'">
+    </ngx-charts-bar-vertical>
+  </section>
+</main> -->
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="dashboard-title">
+          <mat-icon class="title-icon">dashboard</mat-icon>
+          EduShare Admin Dashboard
+        </h1>
+        <p class="dashboard-subtitle">Manage your educational file sharing platform</p>
+      </div>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" class="refresh-btn" (click)="refreshData()">
+          <mat-icon>refresh</mat-icon>
+          Refresh Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading dashboard data...</p>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading" class="dashboard-content">
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <mat-card class="stat-card users-card" (click)="navigateToUsers()">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>people</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{usersCount}}</h3>
+              <p class="stat-label">Total Users</p>
+              <p class="stat-sublabel">{{activeUsersCount}} active</p>
+            </div>
+          </div>
+          <!-- <div class="stat-trend positive">
+            <mat-icon>trending_up</mat-icon>
+            <span>+12%</span>
+          </div> -->
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card topics-card" (click)="navigateToTopics()">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>category</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{topicsCount}}</h3>
+              <p class="stat-label">Topics</p>
+              <p class="stat-sublabel">Categories available</p>
+            </div>
+          </div>
+          <!-- <div class="stat-trend positive">
+            <mat-icon>trending_up</mat-icon>
+            <span>+8%</span>
+          </div> -->
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card files-card" (click)="navigateToFiles()">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>folder</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{filesCount}}</h3>
+              <p class="stat-label">Files Shared</p>
+              <p class="stat-sublabel">Total resources</p>
+            </div>
+          </div>
+          <!-- <div class="stat-trend positive">
+            <mat-icon>trending_up</mat-icon>
+            <span>+25%</span>
+          </div> -->
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card downloads-card">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>download</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{filesCount * 3}}</h3>
+              <p class="stat-label">Downloads</p>
+              <p class="stat-sublabel">This month</p>
+            </div>
+          </div>
+          <!-- <div class="stat-trend positive">
+            <mat-icon>trending_up</mat-icon>
+            <span>+18%</span>
+          </div> -->
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      
+      <!-- Files by Topic Chart -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>bar_chart</mat-icon>
+            Files by Topic
+          </mat-card-title>
+          <mat-card-subtitle>Distribution of shared files across topics</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <ngx-charts-bar-vertical
+              [results]="filesByTopic"
+              scheme="vivid"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxisLabel]="'Topics'"
+              [yAxisLabel]="'Number of Files'"
+              [view]="view"
+              [gradient]="true"
+              [barPadding]="8">
+            </ngx-charts-bar-vertical>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- User Registrations Chart -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>timeline</mat-icon>
+            User Registrations
+          </mat-card-title>
+          <mat-card-subtitle>Monthly user registration trends</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <ngx-charts-line-chart
+              [results]="[{name: 'Registrations', series: userRegistrations}]"
+              scheme="vivid"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxisLabel]="'Month'"
+              [yAxisLabel]="'New Users'"
+              [view]="view"
+              [curve]="'cardinal'">
+            </ngx-charts-line-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- File Uploads Chart -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>upload</mat-icon>
+            File Uploads
+          </mat-card-title>
+          <mat-card-subtitle>Weekly file upload activity</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <ngx-charts-area-chart
+              [results]="[{name: 'Uploads', series: fileUploadsOverTime}]"
+              scheme="vivid"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxisLabel]="'Week'"
+              [yAxisLabel]="'Files Uploaded'"
+              [view]="view"
+              [gradient]="true">
+            </ngx-charts-area-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Topic Distribution Pie Chart -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>pie_chart</mat-icon>
+            Topic Distribution
+          </mat-card-title>
+          <mat-card-subtitle>File distribution across topics</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              [results]="filesByTopic"
+              scheme="vivid"
+              [legend]="true"
+              [labels]="true"
+              [doughnut]="true"
+              [view]="view">
+            </ngx-charts-pie-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Quick Actions
+    <div class="quick-actions">
+      <mat-card class="actions-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>flash_on</mat-icon>
+            Quick Actions
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="actions-grid">
+            <button mat-raised-button color="primary" (click)="navigateToUsers()">
+              <mat-icon>person_add</mat-icon>
+              Manage Users
+            </button>
+            <button mat-raised-button color="accent" (click)="navigateToTopics()">
+              <mat-icon>add_circle</mat-icon>
+              Add Topic
+            </button>
+            <button mat-raised-button color="warn" (click)="navigateToFiles()">
+              <mat-icon>folder_open</mat-icon>
+              View Files
+            </button>
+            <button mat-raised-button>
+              <mat-icon>settings</mat-icon>
+              System Settings
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+</div> -->

@@ -1,0 +1,201 @@
+<div class="topics-container">
+  <!-- Header -->
+  <div class="topics-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="topics-title">
+          <mat-icon class="title-icon">category</mat-icon>
+          Topic Management
+        </h1>
+        <p class="topics-subtitle">Organize and manage educational topics</p>
+      </div>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" class="add-topic-btn" (click)="openAddDialog()">
+          <mat-icon>add</mat-icon>
+          Add New Topic
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading topics...</p>
+  </div>
+
+  <!-- Topics Content -->
+  <div *ngIf="!loading" class="topics-content">
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <mat-card class="stat-card topics-stat">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>category</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{totalTopics}}</h3>
+              <p class="stat-label">Total Topics</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card files-stat">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>folder</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{totalFiles}}</h3>
+              <p class="stat-label">Total Files</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card average-stat">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon">
+              <mat-icon>analytics</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{averageFilesPerTopic}}</h3>
+              <p class="stat-label">Avg Files/Topic</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Search and Filters -->
+    <mat-card class="search-card">
+      <mat-card-content>
+        <div class="search-container">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search topics...</mat-label>
+            <input matInput 
+                   [(ngModel)]="searchTerm" 
+                   (input)="applySearch()"
+                   placeholder="Search by name or description">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+          <button *ngIf="searchTerm" mat-icon-button (click)="clearSearch()" class="clear-search">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Topics Grid -->
+    <div class="topics-grid">
+      <mat-card 
+        *ngFor="let topic of filteredTopics; let i = index" 
+        class="topic-card"
+        [style.background]="getTopicColor(i)">
+        
+        <mat-card-header>
+          <div mat-card-avatar class="topic-avatar">
+            <mat-icon>{{getTopicIcon(topic.name)}}</mat-icon>
+          </div>
+          <mat-card-title>{{topic.name}}</mat-card-title>
+          <mat-card-subtitle *ngIf="topic.description">{{topic.description}}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="topic-stats">
+            <div class="topic-stat-item">
+              <mat-icon>folder</mat-icon>
+              <span>{{filesCount[topic.id] || 0}} files</span>
+            </div>
+            <div class="topic-stat-item" *ngIf="topic.createdAt">
+              <mat-icon>schedule</mat-icon>
+              <span>Created {{topic.createdAt | date:'shortDate'}}</span>
+            </div>
+          </div>
+
+          <!-- File Count Badge -->
+          <div class="file-count-badge" *ngIf="filesCount[topic.id]">
+            <mat-chip [color]="filesCount[topic.id] > 10 ? 'primary' : 'accent'">
+              {{filesCount[topic.id]}} files
+            </mat-chip>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-icon-button 
+                  color="primary" 
+                  (click)="openEditDialog(topic)"
+                  matTooltip="Edit Topic">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button 
+                  color="warn" 
+                  (click)="deleteTopic(topic)"
+                  matTooltip="Delete Topic"
+                  [disabled]="filesCount[topic.id] > 0">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button 
+                  color="accent" 
+                  matTooltip="View Files">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredTopics.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">category</mat-icon>
+        <h3>No Topics Found</h3>
+        <p *ngIf="searchTerm; else noTopicsMessage">
+          No topics match your search criteria.
+        </p>
+        <ng-template #noTopicsMessage>
+          <p>Start by creating your first topic to organize files.</p>
+          <button mat-raised-button color="primary" (click)="openAddDialog()">
+            <mat-icon>add</mat-icon>
+            Create First Topic
+          </button>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <!-- <div class="quick-actions" *ngIf="filteredTopics.length > 0">
+      <mat-card class="actions-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>flash_on</mat-icon>
+            Quick Actions
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="actions-grid">
+            <button mat-raised-button color="primary" (click)="openAddDialog()">
+              <mat-icon>add</mat-icon>
+              Add Topic
+            </button>
+            <button mat-raised-button color="accent">
+              <mat-icon>import_export</mat-icon>
+              Bulk Import
+            </button>
+            <button mat-raised-button>
+              <mat-icon>download</mat-icon>
+              Export List
+            </button>
+            <button mat-raised-button>
+              <mat-icon>settings</mat-icon>
+              Topic Settings
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+</div> -->

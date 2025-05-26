@@ -1,0 +1,63 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <mat-icon>{{isUpdate ? 'edit' : 'add_circle'}}</mat-icon>
+      {{isUpdate ? 'Edit Topic' : 'Add New Topic'}}
+    </h2>
+    <p class="dialog-subtitle">
+      {{isUpdate ? 'Update the topic details' : 'Enter the details for the new topic'}}
+    </p>
+  </div>
+
+  <form class="topic-form" (ngSubmit)="save()" #topicForm="ngForm">
+    <div class="form-grid">
+      <!-- Topic Name Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Topic Name</mat-label>
+        <input matInput 
+               [(ngModel)]="name" 
+               name="name"
+               required
+               #nameInput="ngModel"
+               placeholder="Enter topic name"
+               maxlength="100">
+        <mat-icon matSuffix>category</mat-icon>
+        <mat-hint align="end">{{name.length}}/100</mat-hint>
+        <mat-error *ngIf="nameInput.invalid && nameInput.touched">
+          Topic name is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Description Field (Optional) -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description (Optional)</mat-label>
+        <textarea matInput 
+                  [(ngModel)]="description" 
+                  name="description"
+                  #descriptionInput="ngModel"
+                  placeholder="Enter topic description"
+                  rows="3"
+                  maxlength="500"></textarea>
+        <mat-icon matSuffix>description</mat-icon>
+        <mat-hint align="end">{{description.length}}/500</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="dialog-actions">
+      <button mat-button type="button" mat-dialog-close class="cancel-btn">
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+      <button mat-raised-button 
+              color="primary" 
+              type="submit" 
+              [disabled]="!topicForm.valid || isLoading"
+              class="save-btn">
+        <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+        <mat-icon *ngIf="!isLoading">{{isUpdate ? 'save' : 'add'}}</mat-icon>
+        {{isUpdate ? 'Update Topic' : 'Add Topic'}}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,96 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <mat-icon>person_add</mat-icon>
+      Add New User
+    </h2>
+    <p class="dialog-subtitle">Enter the details for the new user</p>
+  </div>
+
+  <form class="user-form" (ngSubmit)="add()" #userForm="ngForm">
+    <div class="form-grid">
+      <!-- Full Name Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Full Name</mat-label>
+        <input matInput 
+               [(ngModel)]="fullName" 
+               name="fullName"
+               required
+               #fullNameInput="ngModel"
+               placeholder="Enter full name">
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="fullNameInput.invalid && fullNameInput.touched">
+          Full name is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email Address</mat-label>
+        <input matInput 
+               [(ngModel)]="email" 
+               name="email"
+               type="email"
+               required
+               email
+               #emailInput="ngModel"
+               placeholder="example@email.com">
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="emailInput.invalid && emailInput.touched">
+          <span *ngIf="emailInput.errors?.['required']">Email address is required</span>
+          <span *ngIf="emailInput.errors?.['email']">Please enter a valid email address</span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput 
+               [(ngModel)]="password" 
+               name="password"
+               [type]="hidePassword ? 'password' : 'text'"
+               required
+               minlength="6"
+               #passwordInput="ngModel"
+               placeholder="Enter password (minimum 6 characters)">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">
+          <span *ngIf="passwordInput.errors?.['required']">Password is required</span>
+          <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters</span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Role Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Role</mat-label>
+        <mat-select [(ngModel)]="role" name="role" required #roleInput="ngModel">
+          <mat-option value="student">Student</mat-option>
+          <mat-option value="teacher">Teacher</mat-option>
+          <mat-option value="admin">Administrator</mat-option>
+        </mat-select>
+        <mat-icon matSuffix>work</mat-icon>
+        <mat-error *ngIf="roleInput.invalid && roleInput.touched">
+          Role selection is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="dialog-actions">
+      <button mat-button type="button" (click)="cancel()" class="cancel-btn">
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+      <button mat-raised-button 
+              color="primary" 
+              type="submit" 
+              [disabled]="!userForm.valid"
+              class="add-btn">
+        <mat-icon>add</mat-icon>
+        Add User
+      </button>
+    </div>
+  </form>
+</div>

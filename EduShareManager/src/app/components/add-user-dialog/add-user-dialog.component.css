@@ -1,0 +1,191 @@
+.dialog-container {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  min-width: 500px;
+  max-width: 600px;
+}
+
+.dialog-header {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2rem;
+  color: #8b4513;
+  text-align: center;
+}
+
+.dialog-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.dialog-title mat-icon {
+  font-size: 1.8rem !important;
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+}
+
+.dialog-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0.5rem 0 0 0;
+}
+
+.user-form {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Angular Material Form Field Customization */
+::ng-deep .mat-mdc-form-field {
+  border-radius: 12px !important;
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  border-radius: 12px !important;
+}
+
+::ng-deep .mat-mdc-form-field-outline {
+  border-radius: 12px !important;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline-thick {
+  border-color: #ff8a65 !important;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: #ff8a65 !important;
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-form-field-icon-suffix {
+  color: #8d6e63;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  border-radius: 12px !important;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #8b4513 !important;
+  border: 1px solid rgba(139, 69, 19, 0.3) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+}
+
+.cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.5) !important;
+  color: #654321 !important;
+}
+
+.add-btn {
+  background: linear-gradient(135deg, #ff8a65, #ffab91) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 20px rgba(255, 138, 101, 0.3) !important;
+  transition: all 0.3s ease;
+}
+
+.add-btn:hover:not([disabled]) {
+  background: linear-gradient(135deg, #ff7043, #ff8a65) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(255, 112, 67, 0.4) !important;
+}
+
+.add-btn:disabled {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: rgba(139, 69, 19, 0.5) !important;
+  box-shadow: none !important;
+}
+
+.add-btn mat-icon,
+.cancel-btn mat-icon {
+  margin-right: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .dialog-container {
+    min-width: auto;
+    width: 90vw;
+    max-width: none;
+  }
+  
+  .dialog-header {
+    padding: 1.5rem;
+  }
+  
+  .dialog-title {
+    font-size: 1.5rem;
+  }
+  
+  .user-form {
+    padding: 1.5rem;
+  }
+  
+  .dialog-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .cancel-btn,
+  .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* RTL Support */
+[dir="rtl"] .dialog-actions {
+  justify-content: flex-start;
+}
+
+[dir="rtl"] .add-btn mat-icon,
+[dir="rtl"] .cancel-btn mat-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Error Message Styling */
+::ng-deep .mat-mdc-form-field-error {
+  color: #d32f2f !important;
+  font-size: 0.9rem;
+}
+
+/* Password visibility button */
+::ng-deep .mat-mdc-form-field-icon-suffix button {
+  color: #8d6e63 !important;
+}
+
+::ng-deep .mat-mdc-form-field-icon-suffix button:hover {
+  color: #5d4037 !important;
+}
