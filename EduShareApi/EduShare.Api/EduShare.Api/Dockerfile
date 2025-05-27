@@ -11,10 +11,10 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["EduShare.Api/EduShare.Api.csproj", "EduShare.Api/"]
-COPY ["EduShare.Core/EduShare.Core.csproj", "EduShare.Core/"]
-COPY ["EduShare.Service/EduShare.Service.csproj", "EduShare.Service/"]
-COPY ["EduShare/EduShare.Data.csproj", "EduShare/"]
+COPY EduShare/EduShare.Data.csproj EduShare/
+COPY EduShare.Core/EduShare.Core.csproj EduShare.Core/
+COPY EduShare.Service/EduShare.Service.csproj EduShare.Service/
+COPY EduShare.Api/EduShare.Api.csproj EduShare.Api/
 RUN dotnet restore "./EduShare.Api/EduShare.Api.csproj"
 COPY . .
 WORKDIR "/src/EduShare.Api"
