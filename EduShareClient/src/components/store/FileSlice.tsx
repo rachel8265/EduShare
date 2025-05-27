@@ -424,7 +424,7 @@ const fileSlice = createSlice({
                 const updatedFile = action.payload;
                 console.log(action.payload);
                 
-                debugger;
+                
                 const idx = state.userFiles.findIndex(f => f.id === updatedFile.id);
                 if (idx !== -1) {
                     state.userFiles[idx] = updatedFile;

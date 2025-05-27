@@ -1,15 +1,15 @@
-import { Alert, Box, Button, MenuItem, Modal, TextField } from "@mui/material";
-import { useRef, useState, useContext, FormEvent } from "react";
+import {  Box, Button, MenuItem, Modal, TextField } from "@mui/material";
+import { useRef, useState, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser, registerUser } from "./store/UserSlice"; // ייבוא הפעולה
-import { UserContext } from "./store/UserReducer";
+// import { UserContext } from "./store/UserReducer";
 import { AxiosError } from "axios";
 import { AppDispatch } from "./store/Store";
 import { style } from "./style/Style";
 import { LoginUser } from "../models/UserType";
 
 const LoginModal = ({ sign, onError }: { sign: string, onError: () => void }) => {
-    const [user, userDispatch] = useContext(UserContext);
+    // const [user, userDispatch] = useContext(UserContext);
     const [modal, setModal] = useState(true);
     const passwordRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
@@ -25,7 +25,7 @@ const LoginModal = ({ sign, onError }: { sign: string, onError: () => void }) =>
                     email: emailRef.current?.value || "",
                     password: passwordRef.current?.value || "",
                     fullName: fullNameRef.current?.value || "",
-                    role: roleRef.current?.value as 'Admin' | 'User'
+                    // role: roleRef.current?.value as 'Admin' | 'User'
                 })).unwrap();
                 console.log(res);
 

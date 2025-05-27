@@ -1,17 +1,9 @@
-
-
-
-import React, { useEffect, useState, MouseEvent } from 'react';
+import { useEffect, useState, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// Make sure these paths are correct for your project structure
-// import { fetchSharedFiles } from '../../redux/slices/fileSlice'; 
-// import { fetchTopics } from '../../redux/slices/topicSlice';
-// Using placeholder dispatch functions for now as actual slices are not in this scope.
-
 import {
-  Box, Typography, TextField, Button, Card, CardContent, CardHeader, Tabs, Tab, MenuItem, Select, FormControl,
-  InputLabel, OutlinedInput, InputAdornment, Chip, Avatar, CircularProgress, Collapse, IconButton, Badge, Paper, Divider, Menu,
-  ThemeProvider, createTheme, Grid,
+  Box, Typography, Button, Card, CardContent, Tabs, Tab, MenuItem, Select, FormControl,
+  InputLabel, OutlinedInput, InputAdornment, Chip, Avatar, CircularProgress, Collapse, IconButton, Paper, Divider, Menu,
+  ThemeProvider, Grid,
   useTheme
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -33,8 +25,6 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ShareIcon from '@mui/icons-material/Share';
 import { fetchSharedFiles } from '../store/FileSlice';
 import { fetchTopics } from '../store/TopicSlice';
-// Assuming TopicType and FileType are defined in your project
-// For this example, I'll use basic types.
 import type { FileType } from '../../models/FileType';
 
 interface TopicType {
@@ -151,11 +141,11 @@ function FileCard({ file, handleDownload, handleViewFile }: { file: FileType, ha
     handleMenuClose();
   };
 
-  const onFileView = (event: MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    handleViewFile(file);
-    handleMenuClose();
-  };
+  // const onFileView = (event: MouseEvent<HTMLElement>) => {
+  //   event.stopPropagation();
+  //   handleViewFile(file);
+  //   handleMenuClose();
+  // };
   
   return (
     <Card 

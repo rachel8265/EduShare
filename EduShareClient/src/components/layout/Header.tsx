@@ -182,8 +182,8 @@ import {
   Settings as SettingsIcon,
   Help as HelpIcon,
 } from "@mui/icons-material"
-import { useAppDispatch, useAppSelector } from "../store/Hooks"
-import { logoutUser, selectUser } from "../store/UserSlice"
+import { useAppDispatch } from "../store/Hooks"
+import { logoutUser } from "../store/UserSlice"
 import { RootStore } from "../store/Store"
 import { useSelector } from "react-redux"
 // import { useAppDispatch, useAppSelector } from "../../redux/hooks"
@@ -198,7 +198,7 @@ const pages = [
 ]
 
 const Header = () => {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
+  // const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -206,16 +206,16 @@ const Header = () => {
   const { user, isAuthenticated } =  useSelector((state: RootStore) => state.user)
   const navigate = useNavigate()
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
+  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElNav(event.currentTarget)
+  // }
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
+  // const handleCloseNavMenu = () => {
+  //   setAnchorElNav(null)
+  // }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
@@ -348,7 +348,7 @@ const Header = () => {
                     key={page.name}
                     component={Link}
                     to={page.path}
-                    onClick={handleCloseNavMenu}
+                    // onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: "text.primary", display: "block", mx: 1 }}
                   > 
                     {page.name}

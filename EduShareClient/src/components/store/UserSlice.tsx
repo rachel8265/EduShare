@@ -251,7 +251,7 @@ import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/tool
 import axios from "axios"
 import type { RootStore } from "../store/Store"
 import type { LoginUser, UserType } from "../../models/UserType"
-import { Token } from "@mui/icons-material"
+// import { Token } from "@mui/icons-material"
 // פעולה אסינכרונית להבאת משתמש לפי token
 export const fetchUserWithToken = createAsyncThunk(
   "user/fetchWithToken",

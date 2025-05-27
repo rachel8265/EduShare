@@ -12,7 +12,6 @@ import { AppDispatch } from '../store/Store';
 // import { updateFolder } from '../FolderSlice';
 import { FolderType } from '../../models/FolderType';
 import {  updateFolder } from '../store/FolderSlice';
-import { updateFile } from '../store/FileSlice';
 
 interface RenameFolderDialogProps {
   open: boolean;

@@ -1,8 +1,8 @@
 "use client"
-import { Box, Container, Typography, useTheme } from "@mui/material"
+import { Box, Container, Typography } from "@mui/material"
 
 const AboutHero = () => {
-  const theme = useTheme()
+  // const theme = useTheme()
 
   return (
     <Box

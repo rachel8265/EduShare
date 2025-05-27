@@ -435,8 +435,8 @@ import {
   Facebook as FacebookIcon,
   PersonAdd as PersonAddIcon,
 } from "@mui/icons-material"
-import { useAppDispatch, useAppSelector } from "../store/Hooks"
-import { clearError, loginUser, resetLoginFailed, selectUser } from "../store/UserSlice"
+import { useAppDispatch } from "../store/Hooks"
+import { clearError, loginUser, resetLoginFailed } from "../store/UserSlice"
 import { useSelector } from "react-redux"
 import { RootStore } from "../store/Store"
 

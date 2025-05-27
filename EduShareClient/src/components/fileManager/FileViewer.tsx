@@ -1881,10 +1881,6 @@ import {
 } from "@mui/material"
 import {
   Close as CloseIcon,
-  PictureAsPdf as PdfIcon,
-  Image as ImageIcon,
-  Description as DocIcon,
-  TableChart as SpreadsheetIcon,
   InsertDriveFile as FileIcon,
   Download as DownloadIcon,
   Refresh as RefreshIcon,
@@ -1933,7 +1929,7 @@ const FileViewer: React.FC<FileViewerProps> = ({ file, open, onClose }) => {
     setError(null)
 
     try {
-      debugger
+      
       // Get the URL for viewing the file
       const response = await axios.get(`http://localhost:5066/api/File/download/${fileData.fileUrl}`)
       console.log("url", response.data)

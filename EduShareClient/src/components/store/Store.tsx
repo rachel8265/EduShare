@@ -1,7 +1,7 @@
-import { combineSlices,configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import UserSlice from './UserSlice';
 import FileSlice from './FileSlice';
-import UserReducer from './UserReducer';
+// import UserReducer from './UserReducer';
 import FolderSlice from './FolderSlice';
 import TopicSlice from './TopicSlice';
 // import FolderSlice from './FolderSlice';

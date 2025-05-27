@@ -75,14 +75,14 @@
 //     return { valid: true };
 //   };
 
-"use client"
-import {
-  InsertDriveFile as FileIcon,
-  PictureAsPdf as PdfIcon,
-  Image as ImageIcon,
-  Description as DocIcon,
-  TableChart as SpreadsheetIcon,
-} from "@mui/icons-material"
+// "use client"
+// import {
+//   InsertDriveFile as FileIcon,
+//   PictureAsPdf as PdfIcon,
+//   Image as ImageIcon,
+//   Description as DocIcon,
+//   TableChart as SpreadsheetIcon,
+// } from "@mui/icons-material"
 
 // export const getFileTypeIcon = (fileName: string) => {
 //   const extension = fileName.split(".").pop()?.toLowerCase()

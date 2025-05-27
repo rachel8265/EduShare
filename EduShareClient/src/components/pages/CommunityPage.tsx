@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+// import type React from "react"
 
 import { useState } from "react"
 import {
@@ -34,10 +34,9 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd"
 const CommunityPage = () => {
   const [tabValue, setTabValue] = useState(0)
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue)
-  }
-
+const handleTabChange = (_: unknown, newValue: number) => {
+  setTabValue(newValue)
+}
   // Sample data for groups
   const groups = [
     {
@@ -159,9 +158,9 @@ const CommunityPage = () => {
               },
             }}
           >
-            <Tab icon={<GroupIcon />} label="Groups" />
-            <Tab icon={<ForumIcon />} label="Discussions" />
-            <Tab icon={<EventIcon />} label="Events" />
+            <Tab label="Groups" icon={<GroupIcon />} iconPosition="start" />
+            <Tab label="Discussions" icon={<ForumIcon />} iconPosition="start" />
+            <Tab label="Events" icon={<EventIcon />} iconPosition="start" />
           </Tabs>
         </Box>
 
@@ -185,7 +184,7 @@ const CommunityPage = () => {
 
             <Grid container spacing={3}>
               {groups.map((group) => (
-                <Grid item xs={12} md={4} key={group.id}>
+                <Grid size={{xs: 12, md: 4}} key={group.id}>
                   <Card sx={{ height: "100%" }}>
                     <CardHeader
                       avatar={<Avatar src={group.image} alt={group.name} />}
@@ -362,7 +361,7 @@ const CommunityPage = () => {
 
             <Grid container spacing={3}>
               {events.map((event) => (
-                <Grid item xs={12} md={4} key={event.id}>
+                <Grid size={{xs: 12, md: 4}}  key={event.id}>
                   <Card sx={{ height: "100%" }}>
                     <Box
                       sx={{

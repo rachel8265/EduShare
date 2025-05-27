@@ -1,7 +1,7 @@
-import { createBrowserRouter, Navigate, redirect } from "react-router-dom"
+import { createBrowserRouter, Navigate } from "react-router-dom"
 import AppLayuot from "./components/AppLayout"
 import HomePage from "./components/pages/HomePage"
-import MaterialsPage from "./components/pages/MaterialsPage"
+// import MaterialsPage from "./components/pages/MaterialsPage"
 import MyFilesPage from "./components/pages/MyFiles"
 import AboutPage from "./components/pages/AboutPage"
 import CommunityPage from "./components/pages/CommunityPage"
@@ -9,7 +9,7 @@ import CommunityPage from "./components/pages/CommunityPage"
 import UnauthorizedPage from "./components/UnauthorizedPage"
 import RegisterPage from "./components/register/RegisterPage"
 import LoginPage from "./components/login/LoginPage"
-import store from "./components/store/Store"
+
 import SharedFilesByTopic from "./components/pages/SharedFilesPage"
 import ProtectedRoute from "./ProtectedRoute"
 
@@ -147,7 +147,7 @@ export const router = createBrowserRouter([
     element: <AppLayuot />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/materials", element: <MaterialsPage /> },
+      // { path: "/materials", element: <MaterialsPage /> },
       { path: "/community", element: <CommunityPage /> },
       { path: "/about", element: <AboutPage /> },
       { path: "/unauthorized", element: <UnauthorizedPage /> },

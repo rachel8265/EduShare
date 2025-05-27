@@ -15,7 +15,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close"
 import FileUploader from "./FileUploader"
 import { useSelector } from "react-redux"
-import { AppDispatch, RootStore } from "../../store/Store"
+import {  RootStore } from "../../store/Store"
 
 interface FileUploadDialogProps {
   open: boolean

@@ -32,7 +32,7 @@ const AboutContact = () => {
       </Box>
 
       <Grid container spacing={6} justifyContent="center">
-        <Grid item xs={12} md={6}>
+        <Grid size={{xs: 12, md: 6}} >
           <Paper
             elevation={0}
             sx={{
@@ -122,7 +122,7 @@ const AboutContact = () => {
             </form>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid size={{xs:12,md:1}} >
           <Box sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
               Contact Information

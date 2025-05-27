@@ -1,18 +1,20 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
+// import type React from "react"
+// import { useState } from "react"
 import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, useTheme, alpha, Paper } from "@mui/material"
 import { ExpandMore } from "@mui/icons-material"
 
 const AboutFAQ = () => {
   const theme = useTheme()
-  const [expanded, setExpanded] = useState<string | false>(false)
+  // const [expanded, setExpanded] = useState<string | false>(false)
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-
+  // const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+  //   setExpanded(isExpanded ? panel : false)
+  // }
+//  const handleChange = (panel: string) => ( isExpanded: boolean) => {
+//     setExpanded(isExpanded ? panel : false)
+//   }
   const faqs = [
     {
       question: "What is EduShare?",
@@ -86,8 +88,8 @@ const AboutFAQ = () => {
         {faqs.map((faq, index) => (
           <Accordion
             key={index}
-            expanded={expanded === `panel${index}`}
-            onChange={handleChange(`panel${index}`)}
+            // expanded={expanded === `panel${index}`}
+            // onChange={handleChange(`panel${index}`)}
             disableGutters
             elevation={0}
             sx={{

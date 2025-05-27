@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { FolderType } from '../../models/FolderType';
 import { FileType } from '../../models/FileType'; // Ensure you have this import
-import { RootStore } from './Store';
+// import { RootStore } from './Store';
 // import { setFiles } from './FileSlice';
 import axiosInstance from '../axiosInstance';
 import { setFiles } from './FileSlice';

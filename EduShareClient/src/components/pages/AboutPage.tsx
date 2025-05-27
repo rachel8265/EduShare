@@ -1,5 +1,5 @@
 "use client"
-import { Box, Container, useTheme } from "@mui/material"
+import { Box, Container } from "@mui/material"
 import AboutHero from "../about/AboutHero"
 import AboutMission from "../about/AboutMission"
 import AboutTeam from "../about/AboutTeam"
@@ -8,7 +8,7 @@ import AboutFAQ from "../about/AboutFAQ"
 import AboutContact from "../about/AboutContact"
 
 const AboutPage = () => {
-  const theme = useTheme()
+  // const theme = useTheme()
 
   return (
     <Box

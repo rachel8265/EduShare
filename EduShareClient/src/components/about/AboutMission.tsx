@@ -60,7 +60,7 @@ const AboutMission = () => {
 
       <Grid container spacing={4}>
         {values.map((value, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
+          <Grid size={{xs:12, sm:6,md:3}} key={index}>
             <Paper
               elevation={0}
               sx={{
