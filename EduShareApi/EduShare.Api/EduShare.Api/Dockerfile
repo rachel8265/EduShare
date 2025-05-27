@@ -14,7 +14,7 @@ WORKDIR /src
 COPY ["EduShare.Api/EduShare.Api.csproj", "EduShare.Api/"]
 COPY ["EduShare.Core/EduShare.Core.csproj", "EduShare.Core/"]
 COPY ["EduShare.Service/EduShare.Service.csproj", "EduShare.Service/"]
-COPY ["EduShare/EduShare.Data.csproj", "EduShare/"]
+COPY ["EduShare.Data/EduShare.Data.csproj", "EduShare.Data/"]
 RUN dotnet restore "./EduShare.Api/EduShare.Api.csproj"
 COPY . .
 WORKDIR "/src/EduShare.Api"
