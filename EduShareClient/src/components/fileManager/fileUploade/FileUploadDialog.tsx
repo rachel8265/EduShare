@@ -65,7 +65,10 @@ const FileUploadDialog: React.FC<FileUploadDialogProps> = ({ open, onClose, curr
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ p: 3 }}>
-        <FileUploader folderId={currentFolderId} userId={user.id} />
+        {/* <FileUploader folderId={currentFolderId} userId={user?.id} /> */}
+             {typeof user?.id === "number" && (
+          <FileUploader folderId={currentFolderId} userId={user.id} />
+        )}
       </DialogContent>
       <DialogActions sx={{ p: 3, borderTop: "1px solid", borderColor: theme.palette.divider }}>
         <Button

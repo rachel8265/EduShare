@@ -363,7 +363,8 @@ const Header = () => {
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={user.fullName} src="/assets/avatar-placeholder.png" />
+                    <Avatar alt={user?.fullName ?? ""} src="/assets/avatar-placeholder.png" />
+                     {/* <Avatar alt={user.fullName} src="/assets/avatar-placeholder.png" /> */}
                   </IconButton>
                 </Tooltip>
                 <Menu

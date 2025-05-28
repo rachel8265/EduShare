@@ -260,7 +260,7 @@ export const logoutUser = createAsyncThunk("user/logout", async (_, thunkAPI) =>
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: {} as UserType,
+    user: null as UserType | null,
     token: "",
     loading: false,
     error: null as string | null,
@@ -270,9 +270,13 @@ const userSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null
+      console.log(state.loading+" uuuujjjjjjj");
+      
     },
     resetLoginFailed: (state) => {
       state.loginFailed = false
+      console.log(state.loading+" jjjjjjj");
+      
     },
   },
   extraReducers: (builder) => {
@@ -282,15 +286,30 @@ const userSlice = createSlice({
         state.error = null
         state.loginFailed = false
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserType & { token: { result: string } }>) => {
-        state.loading = false
-        state.user = action.payload
-        state.isAuthenticated = true
-        state.loginFailed = false
-        console.log("action.payload", action.payload.token);
+      // .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserType & { token: { result: string } }>) => {
+      //   state.loading = false
+      //   state.user = action.payload
+      //   state.isAuthenticated = true
+      //   state.loginFailed = false
+      //   console.log("action.payload", action.payload.token);
 
-        sessionStorage.setItem("token", action.payload.token.result)
-      })
+      //   sessionStorage.setItem("token", action.payload.token.result)
+      // })
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserType & { token: { result: string } }>) => {
+  state.loading = false
+  
+  state.user = {
+    id: action.payload.id,
+    fullName: action.payload.fullName,
+    email: action.payload.email,
+    password: action.payload.password, // Add a placeholder or actual password if available
+    role: action.payload.role,
+  }
+  state.token = action.payload.token.result
+  state.isAuthenticated = true
+  state.loginFailed = false
+  sessionStorage.setItem("token", action.payload.token.result)
+})
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload as string
@@ -301,6 +320,7 @@ const userSlice = createSlice({
         state.loading = true
         state.error = null
       })
+ 
       .addCase(registerUser.fulfilled, (state, action: PayloadAction<UserType & { token: string }>) => {
         state.loading = false
         state.user = action.payload
@@ -320,6 +340,7 @@ const userSlice = createSlice({
       .addCase(fetchUserWithToken.pending, (state) => {
         state.loading = true;
         state.error = null;
+        
       })
       .addCase(fetchUserWithToken.fulfilled, (state, action: PayloadAction<UserType>) => {
         state.loading = false;

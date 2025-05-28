@@ -43,7 +43,7 @@ const FileManagerPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { folders, currentPath } = useSelector((state: RootStore) => state.folders)
   const { userFiles } = useSelector((state: RootStore) => state.files)
-  const user = useSelector((state: RootStore) => state.user)
+  const user = useSelector((state: RootStore) => state.user.user)
 
   const [isCreateFolderDialogOpen, setIsCreateFolderDialogOpen] = useState(false)
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
@@ -65,10 +65,12 @@ const FileManagerPage = () => {
 
   useEffect(() => {
     if (currentPath.length === 0) {
-      
-      console.log(user.user.id);
-      
-      dispatch(fetchRootFoldersByUserId(user.user.id))
+      if (user && user.id) {
+        console.log(user.id);
+        dispatch(fetchRootFoldersByUserId(user.id))
+      } else {
+        console.log("User is undefined or missing id");
+      }
     } else if (currentFolderId) {
       dispatch(fetchFoldersByParentId(currentFolderId))
       dispatch(fetchFilesByFolder(currentFolderId))

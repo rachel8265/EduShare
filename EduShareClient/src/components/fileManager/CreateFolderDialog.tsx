@@ -4,7 +4,7 @@ import {
   Dialog, DialogTitle, DialogContent, 
   DialogActions, Button, TextField 
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createFolder } from '../store/FolderSlice';
 import { AppDispatch } from '../store/Store';
 // import { AppDispatch } from '../../../store';
@@ -18,13 +18,17 @@ interface CreateFolderDialogProps {
 
 const CreateFolderDialog: React.FC<CreateFolderDialogProps> = ({ open, onClose, currentFolderId }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const {user}= useSelector((state: any) => state.user);
   const [newFolderName, setNewFolderName] = useState('');
 
   const handleCreateFolder = () => {
+    console.log(user.id+"  id");
+    
+    
     if (newFolderName.trim()) {
       dispatch(createFolder({
         name: newFolderName,
-        userId: 1,
+        userId: user.id,
         parentFolderId: currentFolderId
       }));
       setNewFolderName('');

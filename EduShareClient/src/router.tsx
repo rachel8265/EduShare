@@ -11,6 +11,7 @@ import RegisterPage from "./components/register/RegisterPage"
 import LoginPage from "./components/login/LoginPage"
 
 import SharedFilesByTopic from "./components/pages/SharedFilesPage"
+// import ProtectedRoute from "./components/ProtectedRoute"
 import ProtectedRoute from "./ProtectedRoute"
 
 // // פונקציית בדיקת הרשאות שתשמש כ-loader
@@ -160,6 +161,8 @@ export const router = createBrowserRouter([
           { path: "/shared-files", element: <SharedFilesByTopic /> },
         ]
       },
+      //  { path: "/my-files", element: <ProtectedRoute><MyFilesPage /></ProtectedRoute> },
+      // { path: "/shared-files", element: <ProtectedRoute><SharedFilesByTopic /></ProtectedRoute> },
       { path: "*", element: <Navigate to="/" replace /> },
     ],
   },

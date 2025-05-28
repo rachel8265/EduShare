@@ -83,7 +83,7 @@
 //     if (!validateForm()) return
 
 //     dispatch(loginUser({ email, password }))
-    
+
 //     navigate("/my-files")
 
 //   }
@@ -408,11 +408,12 @@
 //     </Box>
 //   )
 // }
+
 "use client"
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useNavigate, useLocation, Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import {
   Box,
   Container,
@@ -436,7 +437,7 @@ import {
   PersonAdd as PersonAddIcon,
 } from "@mui/icons-material"
 import { useAppDispatch } from "../store/Hooks"
-import { clearError, loginUser, resetLoginFailed } from "../store/UserSlice"
+import { clearError, fetchUserWithToken, loginUser, resetLoginFailed } from "../store/UserSlice"
 import { useSelector } from "react-redux"
 import { RootStore } from "../store/Store"
 
@@ -449,13 +450,16 @@ export default function LoginPage() {
 
   const dispatch = useAppDispatch()
   const userState = useSelector((state: RootStore) => state.user)
+  console.log("userState", userState);
+
+
   // const { loading, error, isAuthenticated, loginFailed } = useAppSelector(selectUser)
 
   const navigate = useNavigate()
-  const location = useLocation()
+  // const location = useLocation()
 
   // Get the return URL from location state or default to home page
-  const from = (location.state as any)?.from?.pathname || "/my-files"
+  // const from = (location.state as any)?.from?.pathname || "/my-files"
 
   // Clear errors when component unmounts
   useEffect(() => {
@@ -464,13 +468,20 @@ export default function LoginPage() {
       dispatch(resetLoginFailed())
     }
   }, [dispatch])
+const { isAuthenticated } = useSelector((state: RootStore) => state.user);
 
+
+useEffect(() => {
+  if (isAuthenticated) {
+    navigate("/my-files");
+  }
+}, [isAuthenticated, navigate]);
   // Redirect if already authenticated
-  useEffect(() => {
-    if (userState.isAuthenticated ) {
-      navigate(from)
-    }
-  }, [userState.isAuthenticated , navigate, from])
+  // useEffect(() => {
+  //   if (userState.isAuthenticated ) {
+  //     navigate("/my-files")
+  //   }
+  // }, [userState.isAuthenticated , navigate])
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {}
@@ -496,7 +507,12 @@ export default function LoginPage() {
 
     if (!validateForm()) return
 
-    dispatch(loginUser({ email, password }))
+    // dispatch(loginUser({ email, password }))
+    const result = await dispatch(loginUser({ email, password }))
+    if (loginUser.fulfilled.match(result)) {
+      await dispatch(fetchUserWithToken())
+      navigate("/my-files")
+    }
   }
 
   const handleDemoLogin = async () => {
@@ -559,7 +575,7 @@ export default function LoginPage() {
               Sign in to access your teaching resources and connect with other educators.
             </Typography>
 
-           
+
             {/* {error && (
   <Alert severity="error" sx={{ mb: 3 }}>
     {typeof error === 'string' ? error : 'An unexpected error occurred.'}

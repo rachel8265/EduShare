@@ -26,7 +26,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import { fetchSharedFiles } from '../store/FileSlice';
 import { fetchTopics } from '../store/TopicSlice';
 import type { FileType } from '../../models/FileType';
-
+import { formatDistanceToNow } from 'date-fns';
 interface TopicType {
   id: string | number;
   name: string;
@@ -104,20 +104,25 @@ const getFileIcon = (fileType: string = '', size: 'large' | 'medium' | 'small' =
 };
 
 const formatRelativeTime = (date: string | Date) => {
-  if (!date) return '';
-  const now = new Date();
-  const d = new Date(date);
-  const diff = now.getTime() - d.getTime();
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
+  // if (!date) return '';
+  // const now = new Date();
+  // const d = new Date(date);
+  // const diff = now.getTime() - d.getTime();
+  // const seconds = Math.floor(diff / 1000);
+  // const minutes = Math.floor(seconds / 60);
+  // const hours = Math.floor(minutes / 60);
+  // const days = Math.floor(hours / 24);
+  // debugger
 
-  if (days > 7) return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-  if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-  return `Just now`;
+  // if (days > 7) return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  // if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+  // if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  // if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  // return `Just now`;
+  console.log(date);
+  
+  if (!date) return '';
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
 };
 
 // ---------- FileCard ----------

@@ -72,6 +72,8 @@ const FileViewer: React.FC<FileViewerProps> = ({ file, open, onClose }) => {
     // } else {
       // setFileUrl(null)
       // setError(null)
+    } else {
+      handleViewClick(file)
       setZoom(1)
       setShowInfo(false)
     }
