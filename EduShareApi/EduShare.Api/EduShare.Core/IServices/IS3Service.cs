@@ -11,6 +11,8 @@ namespace EduShare.Core.IRepositories
         Task<string> GeneratePresignedUrlAsync(string fileName, string fileType);
         Task<string> GetDownloadUrlAsync(string fileName);
         //Task<string> GetDownloadUrlAsync(string s3Key, string displayName);
+        // ב־IS3Service.cs
+        Task<byte[]> GetFileBytesAsync(string s3Key);
 
 
     }

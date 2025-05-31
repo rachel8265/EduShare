@@ -112,7 +112,7 @@ const formatRelativeTime = (date: string | Date) => {
   // const minutes = Math.floor(seconds / 60);
   // const hours = Math.floor(minutes / 60);
   // const days = Math.floor(hours / 24);
-  // debugger
+
 
   // if (days > 7) return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   // if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;

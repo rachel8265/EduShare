@@ -20,12 +20,15 @@ namespace EduShare.Api.Controllers
         readonly IFileService _fileService;
         readonly IMapper _mapper;
         readonly IS3Service _s3Service;
+        private readonly IAIService _aiService;
 
-        public FileController(IFileService fileService, IMapper mapper, IS3Service s3Service)
+        public FileController(IFileService fileService, IMapper mapper, IS3Service s3Service, IAIService aiService)
         {
             _fileService = fileService;
             _mapper = mapper;
             _s3Service = s3Service;
+            _aiService = aiService;
+         
         }
 
         // GET: api/File

@@ -43,6 +43,8 @@ namespace EduShare.Service.Services
             //return url;
         }
 
+       
+       
         //public Task<string> GetDownloadUrlAsync(string fileName)
         //{
         //    Console.WriteLine();
@@ -119,6 +121,21 @@ namespace EduShare.Service.Services
             var normalized = input.Normalize(NormalizationForm.FormKD);
             var bytes = Encoding.ASCII.GetBytes(normalized);
             return Encoding.ASCII.GetString(bytes).Replace("?", "");
+        }
+
+        public async Task<byte[]> GetFileBytesAsync(string s3Key)
+        {
+            //var request = new Amazon.S3.Model.GetObjectRequest
+            var request = new GetObjectRequest
+
+            {
+                BucketName = "edushare.testpnoren",
+                Key = s3Key
+            };
+            using var response = await _s3Client.GetObjectAsync(request);
+            using var ms = new MemoryStream();
+            await response.ResponseStream.CopyToAsync(ms);
+            return ms.ToArray();
         }
     }
 }

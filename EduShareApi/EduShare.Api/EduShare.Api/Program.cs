@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text;
-
+using OpenAI;
 using File = EduShare.Core.Entities.File;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +20,8 @@ using Amazon.Runtime;
 using Amazon;
 using Microsoft.AspNetCore.Builder;
 using Amazon.Extensions.NETCore.Setup;
+using OpenAI;
+using EduShare.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,9 +52,11 @@ builder.Services.AddScoped<IS3Service, S3Service>();//כנראה שלא צריך
 
 // Repository Manager
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+
 //builder.Services.AddScoped(typeof(IRepositoryGeneric<>));
-
-
+builder.Services.AddHttpClient<IAIService, AIService>();
+builder.Services.AddSingleton<FileTextExtractor>();
+builder.Services.AddScoped<IAIService, AIService>();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING"),
     new MySqlServerVersion(new Version(8, 0, 41)),
@@ -165,8 +169,12 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
-
-
+//-----------------------------------------------------------------------------------
+//builder.Services.AddSingleton<OpenAIClient>(sp =>
+//{
+//    var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+//    return new OpenAIClient(new OpenAIAuthentication(apiKey));
+//});
 
 builder.Services.AddDefaultAWSOptions(new AWSOptions
 {

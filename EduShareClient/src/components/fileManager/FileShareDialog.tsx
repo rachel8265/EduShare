@@ -135,7 +135,7 @@ const FileShareDialog: React.FC<FileShareDialogProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>()
   const { topics, loading } = useSelector((state: RootStore) => state.topics)
-
+const t=topics.filter(topic=>topic.id===file?.topicId)
   const [isShared, setIsShared] = useState<boolean>(file?.isPublic || false)
   const [selectedTopicId, setSelectedTopicId] = useState<number>(file?.topicId ?? 0)
 
@@ -177,6 +177,9 @@ const FileShareDialog: React.FC<FileShareDialogProps> = ({
         <ShareIcon color="primary" />
         <Typography variant="h6" component="span">
           Share File with Forum
+        </Typography>
+        <Typography variant="h6" component="span">
+         {t +"iiiiiiiiiiii" }
         </Typography>
       </DialogTitle>
       <Divider />
