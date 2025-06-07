@@ -22,7 +22,7 @@ const CreateFolderDialog: React.FC<CreateFolderDialogProps> = ({ open, onClose, 
   const [newFolderName, setNewFolderName] = useState('');
 
   const handleCreateFolder = () => {
-    console.log(user.id+"  id");
+    // console.log(user.id+"  id");
     
     
     if (newFolderName.trim()) {

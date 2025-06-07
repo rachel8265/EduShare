@@ -74,19 +74,19 @@ namespace EduShare.Service.Services
         //}
       public async Task<FileDto> CreateFileAsync(FileDto fileObj)
         {
-            //// קבל את תוכן הקובץ מה־S3
-            //var fileBytes = await _s3Service.GetFileBytesAsync(fileObj.FileUrl);
+            // קבל את תוכן הקובץ מה־S3
+            var fileBytes = await _s3Service.GetFileBytesAsync(fileObj.FileUrl);
 
-            //// חילוץ טקסט
-            //string text = FileTextExtractor.ExtractText(fileObj.FileName, fileBytes);
+            // חילוץ טקסט
+            string text = FileTextExtractor.ExtractText(fileObj.FileName, fileBytes);
 
-            //// שלח ל־AI
-            //int? topicId = null;
-            //if (!string.IsNullOrWhiteSpace(text))
-            //{
-            //    topicId = await _aiService.PredictTopicIdAsync(text);
-            //}
-            //fileObj.TopicId = topicId;
+            // שלח ל־AI
+            int? topicId = null;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                topicId = await _aiService.PredictTopicIdAsync(text);
+            }
+            fileObj.TopicId = topicId;
 
             // יצירה ושמירה במסד הנתונים
             var fileEntity = _mapper.Map<File>(fileObj);

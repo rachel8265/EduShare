@@ -27,7 +27,7 @@ const LoginModal = ({ sign, onError }: { sign: string, onError: () => void }) =>
                     fullName: fullNameRef.current?.value || "",
                     // role: roleRef.current?.value as 'Admin' | 'User'
                 })).unwrap();
-                console.log(res);
+                // console.log(res);
 
                 // userDispatch({
                 //     type: "CREATE",
@@ -44,7 +44,7 @@ const LoginModal = ({ sign, onError }: { sign: string, onError: () => void }) =>
                         email: emailRef.current?.value || "",
                         password: passwordRef.current?.value || "",
                     } as LoginUser)).unwrap();
-                    console.log(res);
+                    // console.log(res);
                 } catch (error:any) {
                     if(error==401)
                     if (error.status === 401) {

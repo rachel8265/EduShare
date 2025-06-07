@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { TopicService } from '../../services/topic.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -33,7 +33,7 @@ export interface TopicData {
   templateUrl: './topic-edit-dialog.component.html',
   styleUrl: './topic-edit-dialog.component.css'
 })
-export class TopicEditDialogComponent {
+export class TopicEditDialogComponent{
   name = '';
   description = '';
   isUpdate = false;

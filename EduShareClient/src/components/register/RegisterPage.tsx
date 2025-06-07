@@ -153,6 +153,7 @@ export default function RegisterPage() {
     e.preventDefault()
 
     if (!validateStep3()) return
+    
 
     dispatch(
       registerUser({
@@ -162,7 +163,9 @@ export default function RegisterPage() {
       }),
     )
   }
-
+  const handleLoginRedirect = () => {
+    navigate("/login")
+  }
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
@@ -352,6 +355,22 @@ export default function RegisterPage() {
                 {errors.terms}
               </Typography>
             )}
+
+
+             {error && (
+                          <Alert severity="warning" sx={{ mb: 3 }}>
+                          {error}
+                            <Button
+                              variant="text"
+                              color="inherit"
+                              onClick={handleLoginRedirect}
+                              startIcon={<PersonIcon />}
+                              sx={{ mt: 1, fontWeight: "bold" }}
+                            >
+                              Login Now
+                            </Button>
+                          </Alert>
+                        )}
           </>
         )
       default:
@@ -411,11 +430,8 @@ export default function RegisterPage() {
               Join our community of educators and start sharing resources today.
             </Typography>
 
-          {error && (
-  <Alert severity="error" sx={{ mb: 3 }}>
-    {typeof error === 'string' ? error : 'שגיאה לא ידועה'}
-  </Alert>
-)}
+
+
 
 
             <Stepper activeStep={activeStep} sx={{ mb: 4 }}>

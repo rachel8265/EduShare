@@ -239,10 +239,23 @@ export const registerUser = createAsyncThunk(
 
       const response = await axios.post(`${API_URL}/api/user/register`, dataWithRole)
       return response.data // הנחה שהתגובה מכילה את פרטי המשתמש
-    } catch (e) {
-      const message = axios.isAxiosError(e) && e.response ? e.response.data.message : "שגיאה לא ידועה"
-      return thunkAPI.rejectWithValue(message)
-    }
+    } 
+    // catch (e) {
+    //   const message = axios.isAxiosError(e) && e.response ? e.response.data.message : "שגיאה לא ידועה"
+    //   return thunkAPI.rejectWithValue(message)
+    // }
+    catch (e) {
+  if (axios.isAxiosError(e) && e.response) {
+    return thunkAPI.rejectWithValue({
+      message: e.response.data.message,
+      status: e.response.status,
+    })
+  }
+  return thunkAPI.rejectWithValue({
+    message: "שגיאה לא ידועה",
+    status: 0,
+  })
+}
   },
 )
 
@@ -270,12 +283,12 @@ const userSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null
-      console.log(state.loading+" uuuujjjjjjj");
+      // console.log(state.loading+" uuuujjjjjjj");
       
     },
     resetLoginFailed: (state) => {
       state.loginFailed = false
-      console.log(state.loading+" jjjjjjj");
+      // console.log(state.loading+" jjjjjjj");
       
     },
   },
@@ -285,6 +298,7 @@ const userSlice = createSlice({
         state.loading = true
         state.error = null
         state.loginFailed = false
+        
       })
       // .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserType & { token: { result: string } }>) => {
       //   state.loading = false
@@ -310,12 +324,26 @@ const userSlice = createSlice({
   state.loginFailed = false
   sessionStorage.setItem("token", action.payload.token.result)
 })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload as string
-        state.isAuthenticated = false
-        state.loginFailed = true // סימון שההתחברות נכשלה
-      })
+      // .addCase(loginUser.rejected, (state, action) => {
+      //   state.loading = false
+      //   state.error = action.payload as string
+      //   state.isAuthenticated = false
+      //   state.loginFailed = true // סימון שההתחברות נכשלה
+      // })
+.addCase(registerUser.rejected, (state, action) => {
+  state.loading = false
+  state.isAuthenticated = false
+  debugger
+  if (typeof action.payload === "object" && action.payload !== null && "status" in action.payload) {
+    if (action.payload.status === 409) {
+      state.error = "This email address already exists. Try logging in or use a different email."
+    } else {
+      // state.error = action.payload.message
+    }
+  } else {
+    state.error = action.payload as string
+  }
+})
       .addCase(registerUser.pending, (state) => {
         state.loading = true
         state.error = null
@@ -327,12 +355,14 @@ const userSlice = createSlice({
         state.isAuthenticated = true
         state.loginFailed = false
         sessionStorage.setItem("token", action.payload.token)
+        debugger
       })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload as string
-        state.isAuthenticated = false
-      })
+      // .addCase(registerUser.rejected, (state, action) => {
+      //   state.loading = false
+      //   state.error = action.payload as string
+      //   state.isAuthenticated = false
+        
+      // })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = {} as UserType
         state.isAuthenticated = false

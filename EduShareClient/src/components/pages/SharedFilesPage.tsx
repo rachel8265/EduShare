@@ -119,7 +119,7 @@ const formatRelativeTime = (date: string | Date) => {
   // if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
   // if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
   // return `Just now`;
-  console.log(date);
+  // console.log(date);
   
   if (!date) return '';
   return formatDistanceToNow(new Date(date), { addSuffix: true });

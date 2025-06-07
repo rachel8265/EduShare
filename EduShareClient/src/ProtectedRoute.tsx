@@ -14,7 +14,7 @@ export default function ProtectedRoute() {
 const { isAuthenticated, loading } = useSelector((state: RootStore) => state.user);
 
 if (loading) {
-  console.log("loading");
+  // console.log("loading");
   
   return null; // או spinner
 }

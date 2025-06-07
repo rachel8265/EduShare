@@ -171,7 +171,7 @@ export const updateFile = createAsyncThunk(
         { rejectWithValue }
     ) => {
         try {
-            console.log(fileId);
+            // console.log(fileId);
             const response = await axios.patch(`${API_URL}/api/File/${fileId}`, updateData)
             return response.data
         } catch (error) {
@@ -255,7 +255,7 @@ const fileSlice = createSlice({
             })
             .addCase(updateFile.fulfilled, (state, action) => {
                 const updatedFile = action.payload;
-                console.log(action.payload);
+                // console.log(action.payload);
 
 
                 const idx = state.userFiles.findIndex(f => f.id === updatedFile.id);

@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './topic-list.component.html',
   styleUrl: './topic-list.component.css'
 })
-export class TopicListComponent {
+export class TopicListComponent implements OnInit {
   topics: Topic[] = [];
   filteredTopics: Topic[] = [];
   filesCount: { [topicId: number]: number } = {};
@@ -78,6 +78,8 @@ export class TopicListComponent {
           }
         });
         this.totalFiles = files.length;
+
+        //לבדוק אם צריך לקרא פעמיים לפונקציה הזו
         this.updateStats();
         debugger
         console.log('Files count loaded:', files);

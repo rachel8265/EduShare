@@ -13,7 +13,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 // };
 export const appConfig: ApplicationConfig = {
 
-  providers: [provideHttpClient(), provideRouter(routes), provideClientHydration(),
+  providers: [provideHttpClient(), provideRouter(routes), provideClientHydration(),provideAnimations()
     // provideAnimations(),
   ]
 };

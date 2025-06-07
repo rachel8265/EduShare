@@ -43,7 +43,7 @@ interface FileViewerProps {
 }
 
 const FileViewer: React.FC<FileViewerProps> = ({ file, open, onClose }) => {
-  console.log(file);
+  // console.log(file);
 
   
   const theme = useTheme()

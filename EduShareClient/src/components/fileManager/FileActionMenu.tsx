@@ -42,13 +42,13 @@ const FileActionMenu: React.FC<FileActionMenuProps> = ({
 
   const handleDownload = () => {
     // Implement download functionality
-    console.log("Download file:", selectedFile)
+    // console.log("Download file:", selectedFile)
     onClose()
   }
 
   const handleShare = () => {
     // Implement share functionality
-    console.log("Share file:", selectedFile)
+    // console.log("Share file:", selectedFile)
     onClose()
   }
 

@@ -66,7 +66,7 @@ const FileManagerPage = () => {
   useEffect(() => {
     if (currentPath.length === 0) {
       if (user && user.id) {
-        console.log(user.id);
+        // console.log(user.id);
         dispatch(fetchRootFoldersByUserId(user.id))
       } else {
         console.log("User is undefined or missing id");

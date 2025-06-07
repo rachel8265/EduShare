@@ -59,16 +59,22 @@
   </div>
 
   <!-- Loading Spinner -->
-  <div *ngIf="loading" class="loading-container">
+<!-- טעינה -->
+@if (loading) {
+  <div class="loading-container">
     <mat-spinner diameter="50"></mat-spinner>
     <p>Loading dashboard data...</p>
   </div>
-
-  <!-- Dashboard Content -->
-  <div *ngIf="!loading" class="dashboard-content">
+} @else {
+<!-- } @else {
+  <div class="dashboard-content">
     
+
+  <-- Dashboard Content -->
+  <!-- <div *ngIf="!loading" class="dashboard-content"> -->
+     
     <!-- Stats Cards -->
-    <div class="stats-grid">
+    <!-- <div class="stats-grid">
       <mat-card class="stat-card users-card" (click)="navigateToUsers()">
         <mat-card-content>
           <div class="stat-content">
@@ -80,15 +86,17 @@
               <p class="stat-label">Total Users</p>
               <p class="stat-sublabel">{{activeUsersCount}} active</p>
             </div>
-          </div>
+          </div> -->
+
+
           <!-- <div class="stat-trend positive">
             <mat-icon>trending_up</mat-icon>
             <span>+12%</span>
           </div> -->
-        </mat-card-content>
-      </mat-card>
+        <!-- </mat-card-content>
+      </mat-card> -->
 
-      <mat-card class="stat-card topics-card" (click)="navigateToTopics()">
+      <!-- <mat-card class="stat-card topics-card" (click)="navigateToTopics()">
         <mat-card-content>
           <div class="stat-content">
             <div class="stat-icon">
@@ -99,15 +107,20 @@
               <p class="stat-label">Topics</p>
               <p class="stat-sublabel">Categories available</p>
             </div>
-          </div>
+          </div> -->
+
+
+
           <!-- <div class="stat-trend positive">
             <mat-icon>trending_up</mat-icon>
             <span>+8%</span>
           </div> -->
-        </mat-card-content>
-      </mat-card>
 
-      <mat-card class="stat-card files-card" (click)="navigateToFiles()">
+
+        <!-- </mat-card-content>
+      </mat-card> -->
+
+      <!-- <mat-card class="stat-card files-card" (click)="navigateToFiles()">
         <mat-card-content>
           <div class="stat-content">
             <div class="stat-icon">
@@ -118,15 +131,19 @@
               <p class="stat-label">Files Shared</p>
               <p class="stat-sublabel">Total resources</p>
             </div>
-          </div>
+          </div> -->
+
+
           <!-- <div class="stat-trend positive">
             <mat-icon>trending_up</mat-icon>
             <span>+25%</span>
           </div> -->
-        </mat-card-content>
-      </mat-card>
 
-      <mat-card class="stat-card downloads-card">
+
+        <!-- </mat-card-content>
+      </mat-card> -->
+
+      <!-- <mat-card class="stat-card downloads-card">
         <mat-card-content>
           <div class="stat-content">
             <div class="stat-icon">
@@ -137,14 +154,45 @@
               <p class="stat-label">Downloads</p>
               <p class="stat-sublabel">This month</p>
             </div>
-          </div>
+          </div> -->
+
+
           <!-- <div class="stat-trend positive">
             <mat-icon>trending_up</mat-icon>
             <span>+18%</span>
           </div> -->
-        </mat-card-content>
-      </mat-card>
+
+
+        <!-- </mat-card-content>
+      </mat-card> -->
+    <!-- </div> -->
+
+  <div class="dashboard-content">
+    <!-- סטטיסטיקות -->
+    <div class="stats-grid">
+      @for (card of statCards; track card.label) {
+        <mat-card class="stat-card {{card.class}}" (click)="card.action && card.action()">
+          <mat-card-content>
+            <div class="stat-content">
+              <div class="stat-icon">
+                <mat-icon>{{card.icon}}</mat-icon>
+              </div>
+              <div class="stat-info">
+                <h3 class="stat-number">{{card.value}}</h3>
+                <p class="stat-label">{{card.label}}</p>
+                @if (card.sublabel) {
+                  <p class="stat-sublabel">{{card.sublabel}}</p>
+                }
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
     </div>
+
+
+
+
 
     <!-- Charts Section -->
     <div class="charts-section">
@@ -172,6 +220,7 @@
               [yAxisLabel]="'Number of Files'"
               [view]="view"
               [gradient]="true"
+              
               [barPadding]="8">
             </ngx-charts-bar-vertical>
           </div>
@@ -200,7 +249,7 @@
               [xAxisLabel]="'Month'"
               [yAxisLabel]="'New Users'"
               [view]="view"
-              [curve]="'cardinal'">
+              [curve]="curve">
             </ngx-charts-line-chart>
           </div>
         </mat-card-content>
@@ -292,3 +341,6 @@
 
   </div>
 </div> -->
+
+  </div>
+}

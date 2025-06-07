@@ -8,14 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { curveCardinal } from 'd3-shape';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatButtonModule, MatDialogModule,MatIconModule,
-    MatCardModule, MatToolbarModule,NgxChartsModule,MatProgressSpinnerModule],
+  imports: [MatButtonModule,MatIconModule,
+    MatCardModule,NgxChartsModule,MatProgressSpinnerModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -51,7 +51,11 @@ export class DashboardComponent {
   topicsCount = 0;
   filesCount = 0;
   activeUsersCount = 0;
+
+
+  curve = curveCardinal;
   
+
   // Loading states
   loading = true;
   
@@ -77,6 +81,7 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     this.loadDashboardData();
+      console.log('curve:', this.curve);
   }
 
   loadDashboardData(): void {
@@ -116,7 +121,41 @@ export class DashboardComponent {
       }
     });
   }
-
+get statCards() {
+  return [
+    {
+      label: 'Total Users',
+      value: this.usersCount,
+      sublabel: `${this.activeUsersCount} active`,
+      icon: 'people',
+      class: 'users-card',
+      action: () => this.navigateToUsers()
+    },
+    {
+      label: 'Topics',
+      value: this.topicsCount,
+      sublabel: 'Categories available',
+      icon: 'category',
+      class: 'topics-card',
+      action: () => this.navigateToTopics()
+    },
+    {
+      label: 'Files Shared',
+      value: this.filesCount,
+      sublabel: 'Total resources',
+      icon: 'folder',
+      class: 'files-card',
+      action: () => this.navigateToFiles()
+    },
+    {
+      label: 'Downloads',
+      value: this.filesCount * 3,
+      sublabel: 'This month',
+      icon: 'download',
+      class: 'downloads-card'
+    }
+  ];
+}
   generateFilesByTopicData(topics: any[], files: any[]): void {
     this.filesByTopic = topics.map(topic => ({
       name: topic.name,

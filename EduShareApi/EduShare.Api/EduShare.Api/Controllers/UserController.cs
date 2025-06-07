@@ -84,7 +84,7 @@ namespace EduShare.Api.Controllers
 
             if (result == null)
             {
-                return BadRequest("User already exists.");
+                return Conflict("User already exists.");
             }
 
             var tokenString = await _usersService.GenerateJwtToken(result);
