@@ -62,9 +62,11 @@ const FileManagerPage = () => {
   const [fileToView, setFileToView] = useState<FileType | null>(null)
 
   const currentFolderId = currentPath.length > 0 ? currentPath[currentPath.length - 1].id : null
-
+console.log("User from Redux at render:", user);
   useEffect(() => {
     if (currentPath.length === 0) {
+     console.log("User object:", user, "User ID:", user?.id);
+      
       if (user && user.id) {
         // console.log(user.id);
         dispatch(fetchRootFoldersByUserId(user.id))

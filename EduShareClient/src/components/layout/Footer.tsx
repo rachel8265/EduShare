@@ -34,9 +34,9 @@ const Footer = () => {
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 3 }} >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-              <Box sx={{ width: 32, height: 32 }}>
+              {/* <Box sx={{ width: 32, height: 32 }}>
                 <img src="/logo.png" alt="EduShare Logo" style={{ width: "100%", height: "100%" }} />
-              </Box>
+              </Box> */}
               <Typography
                 variant="h6"
                 sx={{

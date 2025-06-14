@@ -234,7 +234,7 @@ const Header = () => {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Box sx={{ my: 2, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 32, height: 32, marginRight: 8 }} />
+        {/* <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 32, height: 32, marginRight: 8 }} /> */}
         <Typography
           variant="h6"
           sx={{
@@ -275,7 +275,7 @@ const Header = () => {
         <Toolbar disableGutters>
           {/* Logo for desktop */}
           <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2, alignItems: "center" }}>
-            <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 32, height: 32, marginRight: 8 }} />
+            {/* <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 32, height: 32, marginRight: 8 }} /> */}
             <Typography
               variant="h6"
               component={Link}
@@ -322,7 +322,7 @@ const Header = () => {
 
           {/* Logo for mobile */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, alignItems: "center" }}>
-            <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 32, height: 32, marginRight: 8 }} />
+            {/* <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 32, height: 32, marginRight: 8 }} /> */}
             <Typography
               variant="h6"
               component={Link}
@@ -360,6 +360,7 @@ const Header = () => {
           {/* User menu */}
           <Box sx={{ flexGrow: 0 }}>
             {isAuthenticated ? (
+              
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

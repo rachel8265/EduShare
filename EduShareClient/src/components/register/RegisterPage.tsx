@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useNavigate, Link, useLocation } from "react-router-dom"
+// import logo from '../../assets/logo.png';
 import {
   Box,
   Container,
@@ -409,7 +410,7 @@ export default function RegisterPage() {
             }}
           >
             <Box sx={{ mb: 6, display: "flex", alignItems: "center" }}>
-              <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 40, height: 40, marginRight: 8 }} />
+          {/* <img src={logo} alt="EduShare Logo" style={{ width: 40, height: 40 , marginRight: 8 }} /> */}
               <Typography
                 variant="h5"
                 sx={{
@@ -609,14 +610,14 @@ export default function RegisterPage() {
                 opacity: 0.3,
               }}
             />
-
+{/* 
             <Box sx={{ position: "relative", width: "100%", maxWidth: 400, zIndex: 1 }}>
               <img
                 src="/assets/teachers-collaborating.png"
                 alt="Teachers collaborating"
                 style={{ width: "100%", height: "auto" }}
               />
-            </Box>
+            </Box> */}
             <Typography
               variant="h5"
               sx={{

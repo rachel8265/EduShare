@@ -53,12 +53,10 @@ function App() {
     <ThemeProvider theme={theme}>
     <Provider store={store}>
        <AuthInitializer />
-<Box sx={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}>
-  <img src={reactLogo} alt="EduShare Logo" style={{ height: 60 }} />
+
 
         <RouterProvider router={router} />
 
-      </Box>
 </Provider>
 </ThemeProvider>
 

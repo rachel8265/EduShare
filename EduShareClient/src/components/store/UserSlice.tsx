@@ -183,6 +183,7 @@
 
 
 // export default userSlice.reducer
+
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios"
 import type { RootStore } from "../store/Store"
@@ -300,36 +301,33 @@ const userSlice = createSlice({
         state.loginFailed = false
         
       })
-      // .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserType & { token: { result: string } }>) => {
-      //   state.loading = false
-      //   state.user = action.payload
-      //   state.isAuthenticated = true
-      //   state.loginFailed = false
-      //   console.log("action.payload", action.payload.token);
 
-      //   sessionStorage.setItem("token", action.payload.token.result)
-      // })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserType & { token: { result: string } }>) => {
-  state.loading = false
+//       .addCase(loginUser.fulfilled, (state, action: PayloadAction<UserType & { token: { result: string } }>) => {
+//   state.loading = false
   
-  state.user = {
-    id: action.payload.id,
-    fullName: action.payload.fullName,
-    email: action.payload.email,
-    password: action.payload.password, // Add a placeholder or actual password if available
-    role: action.payload.role,
-  }
-  state.token = action.payload.token.result
-  state.isAuthenticated = true
-  state.loginFailed = false
-  sessionStorage.setItem("token", action.payload.token.result)
+//   state.user = {
+//     id: action.payload.id,
+//     fullName: action.payload.fullName,
+//     email: action.payload.email,
+//     password: action.payload.password, // Add a placeholder or actual password if available
+//     role: action.payload.role,
+//   }
+//   console.log("loginUser.fulfilled", state.user);
+//   state.token = action.payload.token.result
+//   state.isAuthenticated = true
+//   state.loginFailed = false
+//   sessionStorage.setItem("token", action.payload.token.result)
+// })
+.addCase(loginUser.fulfilled, (state, action: PayloadAction<{ user: UserType, token: string }>) => {
+  state.loading = false;
+  const { user, token } = action.payload;
+  state.user = user;
+   console.log("loginUser.fulfilled", state.user);
+  state.token = token;
+  state.isAuthenticated = true;
+  state.loginFailed = false;
+  sessionStorage.setItem("token", token);
 })
-      // .addCase(loginUser.rejected, (state, action) => {
-      //   state.loading = false
-      //   state.error = action.payload as string
-      //   state.isAuthenticated = false
-      //   state.loginFailed = true // סימון שההתחברות נכשלה
-      // })
 .addCase(registerUser.rejected, (state, action) => {
   state.loading = false
   state.isAuthenticated = false
@@ -349,20 +347,29 @@ const userSlice = createSlice({
         state.error = null
       })
  
-      .addCase(registerUser.fulfilled, (state, action: PayloadAction<UserType & { token: string }>) => {
-        state.loading = false
-        state.user = action.payload
-        state.isAuthenticated = true
-        state.loginFailed = false
-        sessionStorage.setItem("token", action.payload.token)
-        debugger
-      })
-      // .addCase(registerUser.rejected, (state, action) => {
-      //   state.loading = false
-      //   state.error = action.payload as string
-      //   state.isAuthenticated = false
+  //     .addCase(registerUser.fulfilled, (state, action: PayloadAction<UserType & { token: string }>) => {
+       
         
-      // })
+  //       state.loading = false
+  // const { token, ...user } = action.payload
+  // state.user = user
+  //  console.log("registerUser.fulfilled", state.user);
+  // state.token = token
+  //       state.isAuthenticated = true
+  //       state.loginFailed = false
+  //       sessionStorage.setItem("token", action.payload.token)
+  //       debugger
+  //     })
+      .addCase(registerUser.fulfilled, (state, action: PayloadAction<{ user: UserType, token: string }>) => {
+  state.loading = false;
+  const { user, token } = action.payload;
+  state.user = user;
+  state.token = token;
+  state.isAuthenticated = true;
+  state.loginFailed = false;
+  sessionStorage.setItem("token", token);
+})
+
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = {} as UserType
         state.isAuthenticated = false
@@ -377,6 +384,8 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
         state.loginFailed = false;
+        console.log("fetchUserWithToken.fulfilled", state.user);
+        
       })
       .addCase(fetchUserWithToken.rejected, (state, action) => {
         state.loading = false;

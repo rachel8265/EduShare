@@ -554,7 +554,7 @@ useEffect(() => {
             }}
           >
             <Box sx={{ mb: 6, display: "flex", alignItems: "center" }}>
-              <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 40, height: 40, marginRight: 8 }} />
+              {/* <img src="/assets/logo.png" alt="EduShare Logo" style={{ width: 40, height: 40, marginRight: 8 }} /> */}
               <Typography
                 variant="h5"
                 sx={{
@@ -805,13 +805,13 @@ useEffect(() => {
               }}
             />
 
-            <Box sx={{ position: "relative", width: "100%", maxWidth: 400, zIndex: 1 }}>
+            {/* <Box sx={{ position: "relative", width: "100%", maxWidth: 400, zIndex: 1 }}>
               <img
                 src="/assets/teachers-collaborating.png"
                 alt="Teachers collaborating"
                 style={{ width: "100%", height: "auto" }}
               />
-            </Box>
+            </Box> */}
             <Typography
               variant="h5"
               sx={{
