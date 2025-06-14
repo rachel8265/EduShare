@@ -2,12 +2,12 @@
 import './App.css'
 import { Provider } from 'react-redux';
 import store from './components/store/Store'
-import { Box } from '@mui/material'
+// import { Box } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { RouterProvider } from 'react-router'
 import { router } from './router'
 import { AuthInitializer } from './AuthInitializer'
-import reactLogo from './assets/reactLogo.svg';
+// import reactLogo from './assets/reactLogo.svg';
 const theme = createTheme({
   palette: {
     primary: {
